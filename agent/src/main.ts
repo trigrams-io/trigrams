@@ -19,7 +19,10 @@ process.env.PI_CODING_AGENT_DIR = resolve(required('--agent-dir'));
 let transport: Transport;
 const runtime = new Runtime({ cwd: resolve(required('--cwd')), agentDir: resolve(required('--agent-dir')), profile }, (event, params) => transport.emit(event, params));
 transport = new Transport(socketPath, token, (method, params) => runtime.handle(method, params));
-transport.onDisconnect = () => runtime.disconnect();
+transport.onDisconnect = () => {
+  runtime.disconnect();
+  void shutdown().then(() => process.exit(0), error => { console.error(error); process.exit(1); });
+};
 let closing = false;
 async function shutdown() {
   if (closing) return; closing = true;

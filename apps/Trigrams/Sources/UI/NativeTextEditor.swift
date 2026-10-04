@@ -36,7 +36,7 @@ struct NativeTextEditor: NSViewRepresentable {
         view.autoresizingMask = [.width]
         view.textContainer?.widthTracksTextView = true
         view.textContainer?.heightTracksTextView = false
-        view.textContainer?.containerSize = NSSize(width: 0, height: CGFloat.greatestFiniteMagnitude)
+        view.textContainer?.containerSize = NSSize(width: max(1, scroll.contentSize.width), height: CGFloat.greatestFiniteMagnitude)
         view.minSize = NSSize(width: 0, height: 0)
         view.maxSize = NSSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
         view.textContainerInset = NSSize(width: 3, height: 5)

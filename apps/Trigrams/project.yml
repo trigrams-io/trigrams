@@ -17,6 +17,7 @@ settings:
     CURRENT_PROJECT_VERSION: "1"
     ARCHS: "$(NATIVE_ARCH_ACTUAL)"
     CLANG_ENABLE_MODULES: YES
+    TRIGRAMS_TEST_TEMP: /Volumes/SSD/Developer/Codex/tmp
   configs:
     Debug:
       SWIFT_OPTIMIZATION_LEVEL: "-Onone"
@@ -96,6 +97,7 @@ schemes:
       coverageTargets: [Trigrams]
       environmentVariables:
         TRIGRAMS_TEST_ROOT: "$(SRCROOT)/../../build/UIFixtures"
+        TRIGRAMS_TEST_TEMP: "$(TRIGRAMS_TEST_TEMP)"
       targets:
         - name: TrigramsUITests
           parallelizable: false

@@ -37,7 +37,7 @@ final class RuntimeClient: AppRuntimeServing {
             let manager = FileManager.default
             let dataDirectory = try dataDirectoryURL()
             try manager.createDirectory(at: dataDirectory, withIntermediateDirectories: true, attributes: [.posixPermissions: 0o700])
-            let runtime = manager.temporaryDirectory.appendingPathComponent("trigrams-\(UUID().uuidString.prefix(8))", isDirectory: true)
+            let runtime = runtimeBaseDirectory().appendingPathComponent("trigrams-\(UUID().uuidString.prefix(8))", isDirectory: true)
             try manager.createDirectory(at: runtime, withIntermediateDirectories: true, attributes: [.posixPermissions: 0o700])
             runtimeDirectory = runtime
             let socket = runtime.appendingPathComponent("agent.sock").path
@@ -156,6 +156,13 @@ final class RuntimeClient: AppRuntimeServing {
     private func connect(_ socket: String) async throws {
         let connection = NWConnection(to: .unix(path: socket), using: .tcp)
         self.connection = connection
+        let deadline = Task { [weak self] in
+            do { try await Task.sleep(for: .seconds(10)) } catch { return }
+            guard let self, self.connection === connection, self.connecting != nil else { return }
+            self.fail(RuntimeFailure(code: "transport.timeout", message: "The local agent connection timed out."))
+            connection.cancel()
+        }
+        defer { deadline.cancel() }
         try await withCheckedThrowingContinuation { continuation in
             connecting = continuation
             connection.stateUpdateHandler = { [weak self] state in
@@ -167,6 +174,7 @@ final class RuntimeClient: AppRuntimeServing {
                         self.connecting = nil
                         self.receive()
                     case .failed(let error): self.fail(RuntimeFailure(code: "transport.connect", message: error.localizedDescription))
+                    case .waiting(let error): self.fail(RuntimeFailure(code: "transport.connect", message: error.localizedDescription))
                     case .cancelled: self.fail(RuntimeFailure(code: "transport.closed", message: "The agent disconnected."))
                     default: break
                     }
@@ -253,6 +261,15 @@ final class RuntimeClient: AppRuntimeServing {
         if arguments.contains("--ui-testing"), let path = argument("--data-directory") { return URL(fileURLWithPath: path, isDirectory: true) }
         #endif
         return try FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent("Trigrams", isDirectory: true)
+    }
+
+    private func runtimeBaseDirectory() -> URL {
+        #if DEBUG
+        if arguments.contains("--ui-testing"), let path = argument("--runtime-directory") {
+            return URL(fileURLWithPath: path, isDirectory: true)
+        }
+        #endif
+        return FileManager.default.temporaryDirectory
     }
 
     private func workingDirectory(_ data: URL) -> URL {

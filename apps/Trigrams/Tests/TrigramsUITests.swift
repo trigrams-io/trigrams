@@ -343,13 +343,15 @@ final class TrigramsUITests: XCTestCase {
     private func launch(_ fixture: URL, extra: [String] = []) -> XCUIApplication {
         continueAfterFailure = false
         let app = XCUIApplication()
-        app.launchArguments = ["--ui-testing", "--data-directory", fixture.appending(path: "data").path,
+        app.launchArguments = ["-NSTreatUnknownArgumentsAsOpen", "NO", "--ui-testing", "--data-directory", fixture.appending(path: "data").path,
                                "--working-directory", fixture.appending(path: "workspace").path,
-                               "--skill-directory", fixture.appending(path: "skills").path] + extra
+                               "--skill-directory", fixture.appending(path: "skills").path,
+                               "--runtime-directory", ProcessInfo.processInfo.environment["TRIGRAMS_TEST_TEMP"] ?? "/Volumes/SSD/Developer/Codex/tmp"] + extra
         for name in ["TMPDIR", "TMP", "TEMP"] {
             if let value = ProcessInfo.processInfo.environment[name] { app.launchEnvironment[name] = value }
         }
         app.launch()
+        app.activate()
         waitEnabled(app.buttons["newChatButton"], timeout: 25)
         return app
     }
@@ -365,7 +367,17 @@ final class TrigramsUITests: XCTestCase {
         element.click()
         app.typeKey("a", modifierFlags: .command)
         app.typeKey(.delete, modifierFlags: [])
-        if !text.isEmpty { element.typeText(text) }
+        if !text.isEmpty {
+            // Paste through the real editor so tests are independent of the
+            // Mac's active input method and keyboard layout.
+            let pasteboard = NSPasteboard.general
+            let previous = pasteboard.string(forType: .string)
+            pasteboard.clearContents()
+            pasteboard.setString(text, forType: .string)
+            app.typeKey("v", modifierFlags: .command)
+            pasteboard.clearContents()
+            if let previous { pasteboard.setString(previous, forType: .string) }
+        }
     }
 
     private func waitEnabled(_ element: XCUIElement, timeout: TimeInterval = 15) {

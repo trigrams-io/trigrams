@@ -74,6 +74,11 @@
             value = "$(SRCROOT)/../../build/UIFixtures"
             isEnabled = "YES">
          </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "TRIGRAMS_TEST_TEMP"
+            value = "$(TRIGRAMS_TEST_TEMP)"
+            isEnabled = "YES">
+         </EnvironmentVariable>
       </EnvironmentVariables>
       <CodeCoverageTargets>
          <BuildableReference
