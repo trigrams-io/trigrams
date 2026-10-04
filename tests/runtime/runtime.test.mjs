@@ -29,7 +29,7 @@ test('a large skill catalogue stays local and selected instructions load through
   assert.equal(catalogue.filter(skill => skill.name.startsWith('indexed-')).length, 80);
   assert.equal(catalogue.find(skill => skill.name === 'indexed-079').description, description.trim());
   const quotedIndex = "'" + indexPath.replaceAll("'", "'\\''") + "'";
-  await peer.request('model.complete', { id: first.id, response: { text: '', toolCalls: [{ name: 'bash', arguments: { command: `rg -F '"name":"indexed-079"' ${quotedIndex}` } }] } });
+  await peer.request('model.complete', { id: first.id, response: { text: '', toolCalls: [{ name: 'bash', arguments: { command: `/usr/bin/grep -F '"name":"indexed-079"' ${quotedIndex}` } }] } });
   const second = await peer.event('model.generate', p => p.id !== first.id, after);
   const skillPath = join(f.agentDir, 'skills/indexed-079/SKILL.md');
   assert(second.prompt.includes(skillPath));
@@ -43,10 +43,12 @@ test('a large skill catalogue stays local and selected instructions load through
   await peer.request('session.prompt', { text: 'Catalogue after disabling a skill' });
   const updated = await peer.event('model.generate', () => true, next);
   assert(!(await readFile(indexPath, 'utf8')).includes('"name":"indexed-079"'));
-  await peer.request('model.complete', { id: updated.id, response: { text: 'Done', toolCalls: [] } });
+  await peer.request('model.fail', { id: updated.id, code: 'model.context', message: 'Input exceeds the context window.' });
   const summary = await peer.event('model.generate', p => p.tools.length === 0, next);
   assert(summary.instructions.includes('summarization assistant'));
   await peer.request('model.complete', { id: summary.id, response: { text: 'The user requested indexed-079. Its original instructions were read and VERIFIED was reported. The skill was subsequently disabled.', toolCalls: [] } });
+  const retry = await peer.event('model.generate', p => p.id !== updated.id && p.id !== summary.id, next);
+  await peer.request('model.complete', { id: retry.id, response: { text: 'Done', toolCalls: [] } });
   await peer.event('session.snapshot', p => p.status === 'idle', next);
   assert((await peer.request('session.tree')).entries.some(entry => entry.type === 'compaction'));
 });

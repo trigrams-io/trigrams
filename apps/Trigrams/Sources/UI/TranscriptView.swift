@@ -84,6 +84,7 @@ struct TranscriptView: View {
         }
         .padding(message.role == "user" ? 16 : 0)
         .background(message.role == "user" ? palette.highlight : .clear, in: RoundedRectangle(cornerRadius: 8))
+        .accessibilityElement(children: .contain)
     }
 }
 

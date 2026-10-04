@@ -60,6 +60,7 @@ struct RootView: View {
             Spacer()
             Text(model.selectedSession?.title ?? String(localized: "New chat"))
                 .font(TrigramsFont.medium(13)).lineLimit(1).foregroundStyle(palette.secondary)
+                .accessibilityElement(children: .ignore)
                 .accessibilityIdentifier("chatTitle")
             Spacer()
             if !model.sidebarVisible {
@@ -71,6 +72,7 @@ struct RootView: View {
         }
         .padding(.horizontal, 10).frame(height: 46)
         .background(palette.highlight)
+        .accessibilityElement(children: .contain)
     }
     private var chatHeader: some View {
         HStack(spacing: 10) {

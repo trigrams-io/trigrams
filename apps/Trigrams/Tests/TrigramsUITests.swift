@@ -46,6 +46,10 @@ final class TrigramsUITests: XCTestCase {
         defer { app.terminate(); try? FileManager.default.removeItem(at: fixture) }
         XCTAssertFalse(app.textFields["chatSearchField"].exists)
         XCTAssertFalse(app.buttons["composerSkillsButton"].exists)
+        let toggle = app.buttons["sidebarToggleButton"]
+        let controls = app.windows.firstMatch.buttons.allElementsBoundByIndex.filter { $0.frame.width > 0 && $0.frame.maxX < toggle.frame.minX && $0.frame.minY < toggle.frame.maxY }
+        XCTAssertEqual(controls.count, 3, "The window keeps its three standard AppKit controls.")
+        for control in controls { XCTAssertEqual(control.frame.midY, toggle.frame.midY, accuracy: 1) }
         click(app.buttons["chatSearchButton"])
         XCTAssertTrue(app.textFields["chatSearchField"].waitForExistence(timeout: 5))
         click(app.buttons["chatSearchButton"])
