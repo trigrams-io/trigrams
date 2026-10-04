@@ -18,12 +18,14 @@
 		37EF528DC4ED32BABDE86F0E /* Phosphor-MIT.txt in Resources */ = {isa = PBXBuildFile; fileRef = DF1CB64BC90AD9EBFF799749 /* Phosphor-MIT.txt */; };
 		3CF6F6AD74D06FDE5D4952C6 /* MarkdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4FA603988D0AAA8FA43A25 /* MarkdownView.swift */; };
 		45F6826E6A5D8634B71DAEE5 /* InterVariable.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6480C261F317A2CDC61AD960 /* InterVariable.ttf */; };
+		48011A2BCC132D4AFE1BCFC6 /* SwiftTerm-MIT.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4632555FD2364D76C9DBFC33 /* SwiftTerm-MIT.txt */; };
 		5638C98D0FFAC3339099602C /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB4FD2D49BA5D0ED1A5AB3C /* Components.swift */; };
 		589EF339D66EFA994B0785F2 /* TrigramsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9AB59E3D99768E47E3FEB32 /* TrigramsUITests.swift */; };
 		58CEDCC1B7C33963FE5305C5 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB4FD2D49BA5D0ED1A5AB3C /* Components.swift */; };
 		5E0950A2ED6DE3C81E2C9BE2 /* JSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8FCC9B73E1D418EC205B49 /* JSONValue.swift */; };
 		5E5BD0B6C8152188BD929069 /* NanoTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F1C0CAE7BA4FE5E003C7BF /* NanoTheme.swift */; };
 		61DC8B7FB4B37C33FED27894 /* ChatModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88576B010CBD3A9DA2690A3A /* ChatModels.swift */; };
+		629DFD9C3959F4C103D0BC3D /* SwiftTerm-MIT.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4632555FD2364D76C9DBFC33 /* SwiftTerm-MIT.txt */; };
 		683E648A8B32A6354854F08F /* NativeTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0697D3DECBD1ABF2CC3B8D /* NativeTextEditor.swift */; };
 		6B78ECAF934C26CD16056822 /* Inter-OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 56AD240AEA17D22074C61539 /* Inter-OFL.txt */; };
 		7B8C4B3394DA62F01F52C5D1 /* DialogCards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D3CCCE3AE7BC327D45A8A8 /* DialogCards.swift */; };
@@ -74,6 +76,7 @@
 		379E82A0657D8AEDA54B5F5F /* CompatibilityTerminal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompatibilityTerminal.swift; sourceTree = "<group>"; };
 		3C8FCC9B73E1D418EC205B49 /* JSONValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONValue.swift; sourceTree = "<group>"; };
 		3CB4FD2D49BA5D0ED1A5AB3C /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
+		4632555FD2364D76C9DBFC33 /* SwiftTerm-MIT.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "SwiftTerm-MIT.txt"; sourceTree = "<group>"; };
 		56AD240AEA17D22074C61539 /* Inter-OFL.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Inter-OFL.txt"; sourceTree = "<group>"; };
 		6480C261F317A2CDC61AD960 /* InterVariable.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = InterVariable.ttf; sourceTree = "<group>"; };
 		75F5F7397E41121CC2DAFFD1 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
@@ -172,6 +175,7 @@
 			children = (
 				56AD240AEA17D22074C61539 /* Inter-OFL.txt */,
 				DF1CB64BC90AD9EBFF799749 /* Phosphor-MIT.txt */,
+				4632555FD2364D76C9DBFC33 /* SwiftTerm-MIT.txt */,
 			);
 			path = Licenses;
 			sourceTree = "<group>";
@@ -357,6 +361,7 @@
 				45F6826E6A5D8634B71DAEE5 /* InterVariable.ttf in Resources */,
 				8640969D2273D2EA899B0B58 /* Localizable.xcstrings in Resources */,
 				37EF528DC4ED32BABDE86F0E /* Phosphor-MIT.txt in Resources */,
+				629DFD9C3959F4C103D0BC3D /* SwiftTerm-MIT.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -369,6 +374,7 @@
 				CE249D450EE3873BBBB36D57 /* InterVariable.ttf in Resources */,
 				EF6EF3CCE37C35BCB8266396 /* Localizable.xcstrings in Resources */,
 				F6D211DF7F47D6DA3F24CCB6 /* Phosphor-MIT.txt in Resources */,
+				48011A2BCC132D4AFE1BCFC6 /* SwiftTerm-MIT.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -574,6 +580,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_ENTITLEMENTS = Configs/UITests.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -635,6 +642,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_ENTITLEMENTS = Configs/UITests.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (

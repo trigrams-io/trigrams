@@ -49,7 +49,11 @@ final class FoundationModelService {
         #endif
         // A fresh session avoids duplicating the history maintained by pi.
         let session = LanguageModelSession(instructions: request["instructions"].string ?? "")
+        #if compiler(>=6.4)
         let options = GenerationOptions(samplingMode: .greedy, maximumResponseTokens: request["maxTokens"].int ?? 768)
+        #else
+        let options = GenerationOptions(sampling: .greedy, maximumResponseTokens: request["maxTokens"].int ?? 768)
+        #endif
         let stream = session.streamResponse(to: request["prompt"].string ?? "", schema: schema, options: options)
         var final: JSONValue = .null
         var text = ""

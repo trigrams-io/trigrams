@@ -22,6 +22,9 @@ cache, production dependencies, and test fixtures stay in the worktree's
 ignored `build/` directory. Open
 `apps/Trigrams/Trigrams.xcodeproj` after bootstrap to run the same UI target
 from Xcode. XCTest UI automation needs a logged-in graphical macOS session.
+The XCTest runner has its own test-only entitlement disabling its default
+sandbox so it can create, change, and inspect those SSD fixtures. This does not
+change either app target's entitlements or the Store sandbox boundary.
 
 The compatibility terminal pins SwiftTerm 1.11.0, using its AppKit/Core Graphics
 renderer. This version supplies the required VT terminal behavior without an

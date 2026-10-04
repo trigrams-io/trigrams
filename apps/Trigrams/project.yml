@@ -81,6 +81,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: io.trigrams.app.uitests
         GENERATE_INFOPLIST_FILE: YES
         TEST_TARGET_NAME: Trigrams
+        CODE_SIGN_ENTITLEMENTS: Configs/UITests.entitlements
 schemes:
   Trigrams:
     build:
