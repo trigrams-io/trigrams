@@ -1,6 +1,6 @@
 # Trigrams 架构提案
 
-状态：待评审。日期：2026-10-04。当前方案：最小宿主，领域能力通过可插拔包交付。
+状态：已进入首轮实现。日期：2026-10-04。当前方案：最小宿主，领域能力通过可插拔包交付。兼容契约中的目标逐项验证，不代表所有能力已经完成。
 
 ## 1. 产品边界与原则
 
@@ -230,7 +230,13 @@ App 只检查核心运行所需的 AFM availability。Accessibility、Automation
 
 pi extensions、skill scripts 和 bash 按上游方式执行代码，保留资源来源与项目 trust。[pi security](https://github.com/earendil-works/pi/blob/200387122ca450d6387f033949423114a270b96c/packages/coding-agent/docs/security.md)
 
-建议初始使用 Developer ID 签名、公证、站外分发，验证 Node/pi 打包、AFM 可用性和资源加载。可选 helper 的签名、依赖与分发属于其 owner；它们不随核心 App 一起签名或自动下载。后续若有明确的官方包需求，作为独立可选包发布。
+产品需要保留未来 Mac App Store 分发的方向。Store 构建与 Community 构建共用原生界面、推理边界和 pi 宿主代码，但不能将无限制执行外部代码的 Community 配置直接提交到商店。
+
+Apple 要求 Mac App Store 应用启用 App Sandbox。审核规则 2.5.2 对下载、安装和执行改变应用功能的代码作出限制；沙盒还限制任意 Apple Events、Accessibility 和子进程的文件访问。这些规则与任意 pi extensions、skill scripts 和系统操作能力存在实质冲突。[审核规则](https://developer.apple.com/app-store/review/guidelines/)、[App Sandbox](https://developer.apple.com/documentation/security/protecting-user-data-with-app-sandbox)。因此，是否采用双发行配置以及 Store 版允许哪些资源，需要作为明确的产品决定，不能通过修改提示词解决。
+
+首轮完整执行链使用 Community 配置。仓库预留独立 Store scheme、沙盒 entitlement 和 profile；Store 的可执行运行时在完成资源政策与沙盒验证前明确拒绝启动，不能宣称该构建已具备商店发行资格。后续需要验证随包审核的能力、声明式 skills、文件授权传递、签名和实际审核结果。发行配置不能让普通设置或下载的 skill 随意关闭沙盒。
+
+Community 的 Developer ID 签名、公证以及 Store 的证书、provisioning、提交凭据通过 GitHub Actions 的环境 secrets 配置。可选 helper 的签名、依赖与分发属于其 owner；它们不随核心 App 一起签名或自动下载。详见[分发说明](distribution.md)。
 
 ## 11. 拟议代码组织与迭代准则
 
@@ -241,7 +247,7 @@ protocol/               # App 与 pi 的必要 IPC 契约
 docs/                  # 架构、设计、兼容要求与决策
 ```
 
-目录在确认后再创建。领域能力包可以位于独立仓库；App 无需知道它们的具体工具和应用名称。
+目录已经按上述边界创建。领域能力包可以位于独立仓库；App 无需知道它们的具体工具和应用名称。
 
 新增功能先判断能否通过现有的 skill、脚本、extension 或 MCP 完成。只有阻碍通用模型接入、pi 兼容或原生宿主使用的问题，才考虑修改核心。使用已有 pi 机制优先于新增 Trigrams 专有 API；不因为某个领域功能很重要就把其实现搬进 App。
 

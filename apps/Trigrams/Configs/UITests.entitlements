@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- The test runner creates and inspects isolated fixtures on the SSD.
+         This entitlement applies only to the XCTest runner, never the app. -->
+    <key>com.apple.security.app-sandbox</key>
+    <false/>
+</dict>
+</plist>

@@ -1,0 +1,33 @@
+{
+  "repository": "https://github.com/phosphor-icons/core",
+  "commit": "2b75f3ad12b420c9504ef05df8d2564a28f8500e",
+  "weight": "regular",
+  "icons": [
+    "chats",
+    "plus",
+    "magnifying-glass",
+    "sidebar-simple",
+    "arrow-up",
+    "stop",
+    "paperclip",
+    "folder-open",
+    "book-open",
+    "puzzle-piece",
+    "terminal-window",
+    "git-branch",
+    "arrows-clockwise",
+    "gear-six",
+    "sun",
+    "moon",
+    "dots-three",
+    "check-circle",
+    "warning-circle",
+    "x",
+    "minus",
+    "arrows-out",
+    "caret-down",
+    "caret-right",
+    "arrow-left",
+    "copy"
+  ]
+}

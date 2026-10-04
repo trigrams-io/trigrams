@@ -1,0 +1,114 @@
+name: Trigrams
+options:
+  minimumXcodeGenVersion: 2.46.0
+  xcodeVersion: "26.0"
+  deploymentTarget:
+    macOS: "26.0"
+  createIntermediateGroups: true
+  developmentLanguage: en
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MACOSX_DEPLOYMENT_TARGET: "26.0"
+    ENABLE_USER_SCRIPT_SANDBOXING: NO
+    CODE_SIGN_STYLE: Manual
+    CODE_SIGN_IDENTITY: "-"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    ARCHS: "$(NATIVE_ARCH_ACTUAL)"
+    CLANG_ENABLE_MODULES: YES
+    TRIGRAMS_TEST_TEMP: /Volumes/SSD/Developer/Codex/tmp
+  configs:
+    Debug:
+      SWIFT_OPTIMIZATION_LEVEL: "-Onone"
+      CODE_SIGN_IDENTITY: "Apple Development"
+    Release:
+      SWIFT_OPTIMIZATION_LEVEL: "-O"
+      DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
+packages:
+  SwiftTerm:
+    url: https://github.com/migueldeicaza/SwiftTerm
+    exactVersion: 1.11.0
+targetTemplates:
+  NativeApp:
+    type: application
+    platform: macOS
+    dependencies:
+      - package: SwiftTerm
+    sources:
+      - path: Sources
+      - path: Resources
+        buildPhase: resources
+        optional: true
+        excludes:
+          - Phosphor
+          - Fonts/provenance.json
+    settings:
+      base:
+        PRODUCT_NAME: Trigrams
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Trigrams
+        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.productivity
+        INFOPLIST_KEY_NSHumanReadableCopyright: "Copyright © 2026 Trigrams contributors"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ENABLE_HARDENED_RUNTIME: YES
+        COMBINE_HIDPI_IMAGES: YES
+    postBuildScripts:
+      - name: Bundle Node and pi runtime
+        script: '"$SRCROOT/../../scripts/bundle-runtime.sh"'
+        basedOnDependencyAnalysis: false
+targets:
+  Trigrams:
+    templates: [NativeApp]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: io.trigrams.app
+        CODE_SIGN_ENTITLEMENTS: Configs/Community.entitlements
+  TrigramsStore:
+    templates: [NativeApp]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: io.trigrams.store
+        CODE_SIGN_ENTITLEMENTS: Configs/Store.entitlements
+        ENABLE_APP_SANDBOX: YES
+        SWIFT_ACTIVE_COMPILATION_CONDITIONS: "$(inherited) APP_STORE"
+  TrigramsUITests:
+    type: bundle.ui-testing
+    platform: macOS
+    sources: [Tests]
+    dependencies:
+      - target: Trigrams
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: io.trigrams.app.uitests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: Trigrams
+        CODE_SIGN_ENTITLEMENTS: Configs/UITests.entitlements
+schemes:
+  Trigrams:
+    build:
+      targets:
+        Trigrams: all
+        TrigramsUITests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      gatherCoverageData: true
+      coverageTargets: [Trigrams]
+      environmentVariables:
+        TRIGRAMS_TEST_ROOT: "$(SRCROOT)/../../build/UIFixtures"
+        TRIGRAMS_TEST_TEMP: "$(TRIGRAMS_TEST_TEMP)"
+      targets:
+        - name: TrigramsUITests
+          parallelizable: false
+    archive:
+      config: Release
+  TrigramsStore:
+    build:
+      targets:
+        TrigramsStore: all
+    run:
+      config: Debug
+    archive:
+      config: Release

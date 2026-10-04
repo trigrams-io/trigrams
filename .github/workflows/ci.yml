@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  end-to-end:
+    name: macOS and pi end-to-end / coverage
+    runs-on: macos-26
+    timeout-minutes: 35
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Prepare pinned build tools and runtime
+        run: scripts/bootstrap.sh
+      - name: Typecheck runtime
+        run: npm --prefix agent run typecheck
+      - name: Test real app and sidecar with production coverage gates
+        run: scripts/test.sh
+      - name: Upload measured production coverage
+        if: always() && hashFiles('build/coverage/production.lcov') != ''
+        uses: codecov/codecov-action@04b047e8bb82a0c002c8312c1c880fbc6a999d45 # v5
+        with:
+          use_oidc: true
+          files: build/coverage/production.lcov
+          disable_search: true
+          fail_ci_if_error: true
+          name: macOS-and-pi-end-to-end
+      - name: Preserve test results and coverage
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: end-to-end-results
+          path: |
+            build/UITests.xcresult
+            build/coverage/
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Build self-contained community distribution
+        run: scripts/archive.sh community
+      - name: Upload unsigned community app
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: Trigrams-community-unsigned
+          path: |
+            build/Trigrams-community.zip
+            build/Trigrams-community.zip.sha256
+          if-no-files-found: error
+          retention-days: 14
