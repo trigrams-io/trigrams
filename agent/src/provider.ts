@@ -2,13 +2,14 @@ import { randomUUID } from 'node:crypto';
 import { Ajv } from 'ajv';
 import { createAssistantMessageEventStream, getCurrentSystemPrompt, getCurrentTools, type AssistantMessage, type Model, type Provider, type SimpleStreamOptions, type TranscriptContext, type ToolCall } from '@earendil-works/pi-ai';
 import { ProtocolError, type Params } from './transport.js';
+import { inferenceMessages } from './context.js';
 
 export const AFM_MODEL: Model<'trigrams-afm'> = {
   id: 'apple-foundation-model', name: 'Apple Foundation Models', api: 'trigrams-afm', provider: 'trigrams-afm',
   baseUrl: 'local://foundation-models', reasoning: false, input: ['text'],
   cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 }, contextWindow: 4096, maxTokens: 1024,
 };
-type Response = { text: string; toolCalls: { name: string; arguments: Record<string, unknown> }[] };
+type Response = { text: string; toolCalls: { name: string; arguments: Record<string, unknown> }[]; contextBudget?: Record<string, number | boolean> };
 type Pending = { resolve: (response: Response) => void; reject: (error: Error) => void; delta: (text: string) => void };
 const ajv = new Ajv({ allErrors: true, strict: false, validateFormats: false });
 
@@ -83,12 +84,13 @@ export class NativeProvider {
           this.pending.set(id, { resolve, reject, delta: append });
           options?.signal?.addEventListener('abort', cancel, { once: true });
           try { this.emit('model.generate', { id, instructions: getCurrentSystemPrompt(context.messages),
-            prompt: JSON.stringify(context.messages.filter(m => m.role !== 'system')), tools,
+            prompt: JSON.stringify(inferenceMessages(context.messages)), tools,
             maxTokens: Math.min(options?.maxTokens ?? model.maxTokens, model.maxTokens) }); }
           catch (error) { reject(error); }
         });
         if (options?.signal?.aborted) throw new ProtocolError('model.cancelled', 'Generation cancelled.');
         // Validate the entire batch before exposing any executable tool-call event.
+        if (response.contextBudget) message.diagnostics!.push({ type: 'context.budget', timestamp: Date.now(), details: response.contextBudget });
         const calls: ToolCall[] = response.toolCalls.map(call => {
           const tool = tools.find(tool => tool.name === call.name);
           if (!tool) throw new ProtocolError('model.tool', `Model requested undeclared tool ${call.name}.`);

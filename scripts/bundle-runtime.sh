@@ -17,8 +17,10 @@ mkdir -p "$RUNTIME_DEST" "$(dirname "$NODE_DEST")"
 rsync -a --delete "$BUILD_DIR/runtime/" "$RUNTIME_DEST/"
 rsync -a --delete "$ROOT/agent/dist/" "$RUNTIME_DEST/dist/"
 rsync -a --delete "$ROOT/agent/resources/" "$RUNTIME_DEST/resources/"
-cp "$NODE_ROOT/bin/node" "$NODE_DEST"
-chmod 755 "$NODE_DEST"
+NODE_STAGING="$(mktemp "$NODE_DEST.XXXXXX")"
+trap 'rm -f "$NODE_STAGING"' EXIT
+cp "$NODE_ROOT/bin/node" "$NODE_STAGING"
+chmod 755 "$NODE_STAGING"
 cp "$NODE_ROOT/LICENSE" "$RUNTIME_DEST/NODE-LICENSE"
 
 # Sign nested executable code explicitly before Xcode signs the containing app.
@@ -26,14 +28,12 @@ cp "$NODE_ROOT/LICENSE" "$RUNTIME_DEST/NODE-LICENSE"
 # them with the selected distribution identity and hardened-runtime options.
 SIGN_IDENTITY="${EXPANDED_CODE_SIGN_IDENTITY:--}"
 [[ -n "$SIGN_IDENTITY" ]] || SIGN_IDENTITY=-
-while IFS= read -r -d '' NESTED_FILE; do
-  if file -b "$NESTED_FILE" | /usr/bin/grep -q 'Mach-O'; then
-    codesign --force --sign "$SIGN_IDENTITY" "$NESTED_FILE"
-  fi
-done < <(find "$RUNTIME_DEST" -type f -print0)
+node "$ROOT/scripts/sign-runtime-code.mjs" "$RUNTIME_DEST" --force --sign "$SIGN_IDENTITY"
 if [[ "${TARGET_NAME:-Trigrams}" == TrigramsStore ]]; then
   NODE_ENTITLEMENTS="$ROOT/apps/Trigrams/Configs/NodeStore.entitlements"
 else
   NODE_ENTITLEMENTS="$ROOT/apps/Trigrams/Configs/NodeCommunity.entitlements"
 fi
-codesign --force --options runtime --entitlements "$NODE_ENTITLEMENTS" --sign "$SIGN_IDENTITY" "$NODE_DEST"
+codesign --force --identifier node --options runtime --entitlements "$NODE_ENTITLEMENTS" --sign "$SIGN_IDENTITY" "$NODE_STAGING"
+# Rebuilding a preview must not modify the executable pages of its live sidecar.
+mv -f "$NODE_STAGING" "$NODE_DEST"

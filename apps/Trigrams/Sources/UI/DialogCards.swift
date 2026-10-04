@@ -49,6 +49,7 @@ struct ExtensionDialogCard: View {
         .foregroundStyle(palette.foreground)
         .background(palette.background, in: RoundedRectangle(cornerRadius: 12))
         .overlay { RoundedRectangle(cornerRadius: 12).stroke(palette.inputBorder, lineWidth: 1) }
+        .accessibilityElement(children: .contain)
         .accessibilityIdentifier("extensionDialog")
         .onAppear { input = dialog.prefill }
     }
@@ -60,6 +61,12 @@ struct BranchCard: View {
     @State private var selectedEntryID: String?
     @Environment(\.nanoPalette) private var palette
     var body: some View {
+        GeometryReader { geometry in
+            panel.frame(width: min(800, geometry.size.width - 64), height: min(640, geometry.size.height - 64))
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+    }
+    private var panel: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
                 Text("Branches").font(TrigramsFont.medium(20)).foregroundStyle(palette.strong)
@@ -92,7 +99,7 @@ struct BranchCard: View {
                     }
                     if model.branchEntries.isEmpty { Text("No recorded entries yet").font(TrigramsFont.body(13)).foregroundStyle(palette.secondary) }
                 }
-            }.scrollIndicators(.hidden).frame(height: 300)
+            }.scrollIndicators(.hidden).frame(maxHeight: .infinity)
             HStack {
                 Spacer()
                 TrigramsButton(label: String(localized: "Fork conversation"), icon: .branch, variant: .primary, identifier: "forkBranchButton") {
@@ -100,10 +107,11 @@ struct BranchCard: View {
                 }.disabled(selectedEntryID == nil || model.isWorking)
             }
         }
-        .padding(24).frame(width: 600)
+        .padding(24)
         .foregroundStyle(palette.foreground)
         .background(palette.background, in: RoundedRectangle(cornerRadius: 12))
         .overlay { RoundedRectangle(cornerRadius: 12).stroke(palette.inputBorder, lineWidth: 1) }
+        .accessibilityElement(children: .contain)
         .accessibilityIdentifier("branchesPanel")
     }
     private func entryLabel(_ entry: JSONValue, index: Int) -> String {
@@ -120,6 +128,12 @@ struct CompatibilityPanel: View {
     @Bindable var model: AppModel
     @Environment(\.nanoPalette) private var palette
     var body: some View {
+        GeometryReader { geometry in
+            panel.frame(width: min(1100, geometry.size.width - 64), height: min(800, geometry.size.height - 64))
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+    }
+    private var panel: some View {
         VStack(spacing: 0) {
             HStack(spacing: 10) {
                 PhosphorIcon(icon: .terminal)
@@ -131,7 +145,6 @@ struct CompatibilityPanel: View {
             CompatibilityTerminal(frames: model.terminalFrames, generation: model.terminalGeneration, onInput: { data in Task { await model.sendCompatibilityInput(data) } }, onResize: { columns, rows in Task { await model.resizeCompatibility(columns: columns, rows: rows) } })
                 .padding(12)
         }
-        .frame(width: 760, height: 500)
         .foregroundStyle(palette.foreground)
         .background(palette.background, in: RoundedRectangle(cornerRadius: 10))
         .overlay { RoundedRectangle(cornerRadius: 10).stroke(palette.inputBorder, lineWidth: 1) }

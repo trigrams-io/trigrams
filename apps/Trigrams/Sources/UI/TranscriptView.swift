@@ -13,7 +13,7 @@ struct TranscriptView: View {
                         ForEach(visibleMessages) { message in
                             messageView(message)
                         }
-                        ForEach(unplacedTools) { tool in ToolRecordView(tool: tool) }
+                        ForEach(unplacedTools) { tool in ToolRecordView(tool: tool, model: model) }
                     }
                     if !visibleMessages.isEmpty || model.isWorking {
                         HStack {
@@ -33,7 +33,7 @@ struct TranscriptView: View {
                     }
                     Color.clear.frame(height: 1).id("transcriptBottom")
                 }
-                .frame(maxWidth: 760, alignment: .leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 32).padding(.vertical, 28)
                 .frame(maxWidth: .infinity)
             }
@@ -62,7 +62,6 @@ struct TranscriptView: View {
     }
     @ViewBuilder private func messageView(_ message: ChatMessage) -> some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text(message.label).font(TrigramsFont.medium(12)).foregroundStyle(palette.secondary)
             if !message.text.isEmpty {
                 if message.role == "user" {
                     Text(message.text).font(TrigramsFont.body(15)).lineSpacing(6).textSelection(.enabled)
@@ -74,7 +73,7 @@ struct TranscriptView: View {
             }
             if !message.thinking.isEmpty { ThinkingRecord(text: message.thinking) }
             ForEach(Array(message.toolCalls.enumerated()), id: \.offset) { _, call in
-                if let tool = model.tools.first(where: { $0.id == call["id"].string }) { ToolRecordView(tool: tool) }
+                if let tool = model.tools.first(where: { $0.id == call["id"].string }) { ToolRecordView(tool: tool, model: model) }
             }
             if message.role != "user", message.role != "assistant", message.text.isEmpty {
                 Text(message.raw.formatted).font(TrigramsFont.code()).textSelection(.enabled)
@@ -90,9 +89,11 @@ struct TranscriptView: View {
 
 struct ToolRecordView: View {
     let tool: ToolExecution
+    let model: AppModel
     @Environment(\.nanoPalette) private var palette
     @State private var expanded = false
     @State private var showRaw = false
+    @State private var completeResult: JSONValue?
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Button { expanded.toggle() } label: {
@@ -120,8 +121,11 @@ struct ToolRecordView: View {
                             .foregroundStyle(tool.status == .error ? palette.errorText : palette.foreground)
                             .accessibilityIdentifier("toolOutput.\(tool.id)")
                     }
-                    TrigramsButton(label: showRaw ? String(localized: "Hide complete result") : String(localized: "Show complete result"), icon: .more, identifier: "completeToolResult.\(tool.id)") { showRaw.toggle() }
-                    if showRaw { Text(tool.result.formatted).font(TrigramsFont.code(12)).textSelection(.enabled).accessibilityIdentifier("rawToolResult.\(tool.id)") }
+                    TrigramsButton(label: showRaw ? String(localized: "Hide complete result") : String(localized: "Show complete result"), icon: .more, identifier: "completeToolResult.\(tool.id)") {
+                        if showRaw { showRaw = false }
+                        else { Task { completeResult = await model.completeToolOutput(tool.id); showRaw = true } }
+                    }
+                    if showRaw { Text((completeResult ?? tool.result).formatted).font(TrigramsFont.code(12)).textSelection(.enabled).accessibilityIdentifier("rawToolResult.\(tool.id)") }
                 }.padding(.horizontal, 12).padding(.bottom, 12)
             }
         }

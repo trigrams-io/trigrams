@@ -26,11 +26,8 @@ security set-keychain-settings -lut 21600 "$KEYCHAIN"
 security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN"
 security import "$SIGNING_DIR/certificate.p12" -k "$KEYCHAIN" -P "$APPLE_CERTIFICATE_PASSWORD" -T /usr/bin/codesign >/dev/null
 security set-key-partition-list -S apple-tool:,apple: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN" >/dev/null
-while IFS= read -r -d '' NESTED_FILE; do
-  if file -b "$NESTED_FILE" | /usr/bin/grep -q 'Mach-O'; then
-    codesign --force --timestamp --options runtime --keychain "$KEYCHAIN" --sign "$DEVELOPER_ID_APPLICATION_IDENTITY" "$NESTED_FILE"
-  fi
-done < <(find "$APP/Contents/Resources/runtime" -type f -print0)
+node "$ROOT/scripts/sign-runtime-code.mjs" "$APP/Contents/Resources/runtime" \
+  --force --timestamp --options runtime --keychain "$KEYCHAIN" --sign "$DEVELOPER_ID_APPLICATION_IDENTITY"
 codesign --force --timestamp --options runtime --keychain "$KEYCHAIN" \
   --entitlements "$ROOT/apps/Trigrams/Configs/NodeCommunity.entitlements" \
   --sign "$DEVELOPER_ID_APPLICATION_IDENTITY" "$APP/Contents/MacOS/node"

@@ -9,6 +9,78 @@ import { extension, mcp } from './fixtures.mjs';
 
 // These tests launch the production sidecar and speak the same protocol as Swift.
 // The deterministic inference peer replaces AFM, while the full pi SDK executes tools.
+test('a large skill catalogue stays local and selected instructions load through pi tools', async t => {
+  const f = await fixture(); t.after(() => f.dispose());
+  const description = 'Use for a catalogue paging scenario. '.repeat(20);
+  for (let i = 0; i < 80; i++) {
+    const name = `indexed-${String(i).padStart(3, '0')}`;
+    await save(join(f.agentDir, `skills/${name}/SKILL.md`), `---\nname: ${name}\ndescription: ${description}\n---\nWrite VERIFIED after reading this original instruction.\n`);
+  }
+  const peer = await start(f); t.after(() => peer.stop());
+  await peer.request('session.create');
+  const after = peer.events.length;
+  await peer.request('session.prompt', { text: 'Find the indexed-079 skill and follow it.' });
+  const first = await peer.event('model.generate', () => true, after);
+  assert(first.instructions.length < 3500, 'Descriptions and per-skill paths must not fill the initial window.');
+  assert(!first.instructions.includes(description));
+  assert(!first.tools.some(tool => tool.name === 'codemode'));
+  const indexPath = join(f.agentDir, 'skills-index.jsonl');
+  const catalogue = (await readFile(indexPath, 'utf8')).trim().split('\n').map(JSON.parse);
+  assert.equal(catalogue.filter(skill => skill.name.startsWith('indexed-')).length, 80);
+  assert.equal(catalogue.find(skill => skill.name === 'indexed-079').description, description.trim());
+  const quotedIndex = "'" + indexPath.replaceAll("'", "'\\''") + "'";
+  await peer.request('model.complete', { id: first.id, response: { text: '', toolCalls: [{ name: 'bash', arguments: { command: `rg -F '"name":"indexed-079"' ${quotedIndex}` } }] } });
+  const second = await peer.event('model.generate', p => p.id !== first.id, after);
+  const skillPath = join(f.agentDir, 'skills/indexed-079/SKILL.md');
+  assert(second.prompt.includes(skillPath));
+  await peer.request('model.complete', { id: second.id, response: { text: '', toolCalls: [{ name: 'read', arguments: { path: skillPath, offset: 1, limit: 10 } }] } });
+  const third = await peer.event('model.generate', p => p.id !== first.id && p.id !== second.id, after);
+  assert(third.prompt.includes('Write VERIFIED after reading this original instruction.'));
+  await peer.request('model.complete', { id: third.id, response: { text: 'VERIFIED', toolCalls: [] } });
+  await peer.event('session.snapshot', p => p.status === 'idle', after);
+  await peer.request('settings.update', { disabledSkills: ['indexed-079'] });
+  const next = peer.events.length;
+  await peer.request('session.prompt', { text: 'Catalogue after disabling a skill' });
+  const updated = await peer.event('model.generate', () => true, next);
+  assert(!(await readFile(indexPath, 'utf8')).includes('"name":"indexed-079"'));
+  await peer.request('model.complete', { id: updated.id, response: { text: 'Done', toolCalls: [] } });
+  const summary = await peer.event('model.generate', p => p.tools.length === 0, next);
+  assert(summary.instructions.includes('summarization assistant'));
+  await peer.request('model.complete', { id: summary.id, response: { text: 'The user requested indexed-079. Its original instructions were read and VERIFIED was reported. The skill was subsequently disabled.', toolCalls: [] } });
+  await peer.event('session.snapshot', p => p.status === 'idle', next);
+  assert((await peer.request('session.tree')).entries.some(entry => entry.type === 'compaction'));
+});
+
+test('large Unicode tool output is paged before the next model step and remains inspectable', async t => {
+  const f = await fixture(); t.after(() => f.dispose());
+  const contents = Array.from({ length: 80 }, (_, i) => `${i}: 工具返回需要完整保存和按需分页。`.repeat(8)).join('\n') + '\nVERBATIM_END';
+  await save(join(f.cwd, 'large.txt'), contents);
+  const peer = await start(f); t.after(() => peer.stop());
+  await peer.request('session.create');
+  const after = peer.events.length;
+  await peer.request('session.prompt', { text: 'Inspect the end of large.txt' });
+  const first = await peer.event('model.generate', () => true, after);
+  await peer.request('model.complete', { id: first.id, response: { text: '', toolCalls: [{ name: 'read', arguments: { path: 'large.txt' } }] } });
+  const next = await peer.event('model.generate', p => p.id !== first.id, after);
+  assert(next.prompt.length < 2300);
+  assert(next.prompt.includes('Paged tool output'));
+  assert(!next.prompt.includes('VERBATIM_END'));
+  const messages = JSON.parse(next.prompt);
+  const result = messages.findLast(message => message.role === 'toolResult');
+  const complete = await peer.request('tool.output', { id: result.toolCallId });
+  assert(complete.result.content[0].text.includes('VERBATIM_END'));
+  assert.equal((await peer.request('tool.output', { id: '../../outside' })).result, null);
+  const match = result.content[0].text.match(/Complete text: (".*?")\./);
+  const path = JSON.parse(match[1]);
+  assert.equal((await stat(path)).mode & 0o777, 0o600);
+  assert.equal(await readFile(path, 'utf8'), contents);
+  await peer.request('model.complete', { id: next.id, response: { text: '', toolCalls: [{ name: 'read', arguments: { path, offset: 81, limit: 1 } }] } });
+  const page = await peer.event('model.generate', p => p.id !== first.id && p.id !== next.id, after);
+  assert(page.prompt.includes('VERBATIM_END'));
+  await peer.request('model.complete', { id: page.id, response: { text: 'The final line is VERBATIM_END.', toolCalls: [] } });
+  await peer.event('session.snapshot', p => p.status === 'idle', after);
+});
+
 test('real pi discovers skills/context, executes built-in and extension tools, preserves JSONL trees', async t => {
   const f = await fixture(); t.after(() => f.dispose());
   await save(join(f.cwd,'AGENTS.md'),'Always preserve the project marker PROJECT_CONTEXT.');
@@ -29,16 +101,21 @@ test('real pi discovers skills/context, executes built-in and extension tools, p
   await peer.request('session.prompt',{text:'/skill:example use fixture'});
   const generation=await peer.event('model.generate',()=>true,after);
   assert(generation.instructions.includes('PROJECT_CONTEXT'));
-  assert(generation.instructions.includes('Integration skill'));
+  assert(generation.instructions.includes('example'));
+  assert(!generation.instructions.includes('Integration skill'));
+  const index = await readFile(join(f.agentDir, 'skills-index.jsonl'), 'utf8');
+  assert(index.includes('Integration skill'));
+  assert.equal((await stat(join(f.agentDir, 'skills-index.jsonl'))).mode & 0o777, 0o600);
   assert(generation.prompt.includes('Read references/data.txt'));
   const toolNames=generation.tools.map(t=>t.name);
-  assert(toolNames.includes('read'));assert(toolNames.includes('fixture_echo'));assert(toolNames.includes('codemode'));assert(toolNames.includes('tool_search'));assert(toolNames.includes('mcp__fixture__echo'));
+  assert(toolNames.includes('read'));assert(toolNames.includes('fixture_echo'));assert(!toolNames.includes('codemode'));assert(toolNames.includes('tool_search'));assert(toolNames.includes('mcp__fixture__echo'));
   await peer.request('model.complete',{id:generation.id,response:{text:'Reading',toolCalls:[{name:'read',arguments:{path:join(f.agentDir,'skills/example/references/data.txt')}},{name:'fixture_echo',arguments:{text:'hello'}},{name:'mcp__fixture__echo',arguments:{text:'world'}}]}});
   const second=await peer.event('model.generate',p=>p.id!==generation.id,after);
   assert(second.prompt.includes('skill payload'));assert(second.prompt.includes('Extension says hello'));assert(second.prompt.includes('MCP says world'));
   await peer.request('model.delta',{id:second.id,text:'Com'});
   await peer.request('model.complete',{id:second.id,response:{text:'Completed',toolCalls:[]}});
   const final=await peer.event('session.snapshot',p=>p.status==='idle',after);
+  assert.equal(final.session.title, (await peer.request('session.list')).sessions.find(session => session.id === initial.session.id).title);
   assert.equal(final.messages.at(-1).content[0].text,'Completed');
   const deltas=peer.events.slice(after).filter(e=>e.event==='session.event'&&e.params.event.type==='message_update'&&e.params.event.assistantMessageEvent.type==='text_delta').map(e=>e.params.event.assistantMessageEvent.delta);
   assert.deepEqual(deltas.slice(-2),['Com','pleted']);
@@ -127,4 +204,14 @@ test('authentication, malformed NDJSON and private socket lifecycle',async t=>{
   const response=once(peer.socket,'data');peer.socket.write('{bad}\n');assert.equal(JSON.parse((await response)[0]).error.code,'protocol.json');
   await assert.rejects(peer.request('hello',{version:1,token:'any'}),e=>e.code==='protocol.handshake');
   await peer.stop();await assert.rejects(stat(peer.path));
+});
+
+test('an oversized outbound result returns an error without disconnecting the sidecar', async t => {
+  const f = await fixture(); t.after(() => f.dispose());
+  await save(join(f.agentDir, 'trigrams-host.json'), JSON.stringify({ systemPrompt: 'x'.repeat(5 * 1024 * 1024), skillDirectories: [], disabledSkills: [], theme: 'system' }));
+  const peer = await start(f); t.after(() => peer.stop());
+  await assert.rejects(peer.request('settings.get'), error => error.code === 'transport.frame');
+  assert((await peer.request('models.list')).models.some(model => model.id === 'apple-foundation-model'));
+  await peer.request('settings.update', { systemPrompt: '' });
+  assert.equal((await peer.request('settings.get')).systemPrompt, '');
 });

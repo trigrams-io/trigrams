@@ -26,6 +26,8 @@ The XCTest runner has its own test-only entitlement disabling its default
 sandbox so it can create, change, and inspect those SSD fixtures. This does not
 change either app target's entitlements or the Store sandbox boundary.
 
+Local Debug builds and UI tests automatically use an existing Apple Development signing identity, including the XCTest runner and bundled executable code. This keeps a stable designated requirement so macOS can reuse Files and Folders permissions across rebuilds. CI remains ad-hoc signed. Set `TRIGRAMS_CODE_SIGN_IDENTITY` to select another identity, or `-` for an unsigned development machine. A first permission grant (or a changed certificate) may still require the Mac owner; the scripts never change the TCC database or disable OS protections. The Xcode Debug configuration also selects Apple Development by default.
+
 The compatibility terminal pins SwiftTerm 1.11.0, using its AppKit/Core Graphics
 renderer. This version supplies the required VT terminal behavior without an
 additional Metal toolchain or a package build plugin. Its exact revision and
@@ -66,6 +68,13 @@ code authored by this project. No app module is excluded to raise a percentage.
 The deterministic inference fixture does not execute Apple's generation path;
 those lines remain uncovered. Real-device model validation remains a separate
 test on an Apple Intelligence-capable Mac.
+
+Run `scripts/test-on-device.sh` for the headless real-model E2E checks. It compiles
+the production Swift inference adapter and drives the real pi sidecar, including
+discovered global skills. It verifies Chinese conversation topic changes and
+an actual file read followed by an answer from the tool result. It leaves the
+foreground app alone and cleans its private fixtures. The hosted CI suite uses
+the deterministic boundary because Apple Intelligence is unavailable there.
 
 Reports are saved to `build/coverage/production.lcov`, `summary.json`, and
 `xccov.json`; XCTest results are in `build/UITests.xcresult`. The GitHub CI job

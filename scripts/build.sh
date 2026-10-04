@@ -13,4 +13,4 @@ xcodebuild -project "$ROOT/apps/Trigrams/Trigrams.xcodeproj" -scheme "$SCHEME" \
   -configuration "$CONFIGURATION" -derivedDataPath "$BUILD_DIR/DerivedData" \
   -clonedSourcePackagesDirPath "$BUILD_DIR/SourcePackages" \
   -packageCachePath "$BUILD_DIR/PackageCache" \
-  -destination 'platform=macOS' CODE_SIGN_IDENTITY=- build
+  -destination 'platform=macOS' CODE_SIGN_IDENTITY="$TRIGRAMS_SIGN_IDENTITY" build

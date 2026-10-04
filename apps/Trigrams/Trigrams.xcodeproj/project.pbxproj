@@ -9,7 +9,9 @@
 /* Begin PBXBuildFile section */
 		01F0E85CC09F49D75BC676FB /* ComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70813BADABC0E782A06E203 /* ComposerView.swift */; };
 		14B0EC56CEE0BC6B57D88607 /* MarkdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4FA603988D0AAA8FA43A25 /* MarkdownView.swift */; };
+		173ADD610BAAEF8A17047AAD /* InferenceInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7DF4929691B865AF1425910 /* InferenceInput.swift */; };
 		17FAE1FE07328AD4DB00BCC7 /* SwiftTerm in Frameworks */ = {isa = PBXBuildFile; productRef = 43E92FE1FBB279F599E38BA2 /* SwiftTerm */; };
+		18DEB5004F5CBFD019A71B71 /* InferenceInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7DF4929691B865AF1425910 /* InferenceInput.swift */; };
 		1EB52CCADC0402697601B252 /* ComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70813BADABC0E782A06E203 /* ComposerView.swift */; };
 		231E574F4FF680B51B049F67 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E39A358CE32B7708EF9F05 /* SidebarView.swift */; };
 		2E4821F90FA73F66C998ACA3 /* RuntimeClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78588356C885A280AB39CF24 /* RuntimeClient.swift */; };
@@ -94,6 +96,7 @@
 		D4F1C0CAE7BA4FE5E003C7BF /* NanoTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NanoTheme.swift; sourceTree = "<group>"; };
 		DF1CB64BC90AD9EBFF799749 /* Phosphor-MIT.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Phosphor-MIT.txt"; sourceTree = "<group>"; };
 		E16F8FD0B0462463ABE54CB8 /* WindowChrome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowChrome.swift; sourceTree = "<group>"; };
+		E7DF4929691B865AF1425910 /* InferenceInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InferenceInput.swift; sourceTree = "<group>"; };
 		E9429F717E4659BA9DA8231D /* TrigramsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrigramsApp.swift; sourceTree = "<group>"; };
 		EFAD7C489EBDE66CF322BFF1 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		F176286DDA68D124A9CE6279 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
@@ -184,6 +187,7 @@
 			isa = PBXGroup;
 			children = (
 				CE267DFFDE3D55947B3604CD /* FoundationModelService.swift */,
+				E7DF4929691B865AF1425910 /* InferenceInput.swift */,
 			);
 			path = Inference;
 			sourceTree = "<group>";
@@ -433,6 +437,7 @@
 				1EB52CCADC0402697601B252 /* ComposerView.swift in Sources */,
 				E42E3DBF61F06A876286512E /* DialogCards.swift in Sources */,
 				E1567BEF0A03A84B2850A4E3 /* FoundationModelService.swift in Sources */,
+				173ADD610BAAEF8A17047AAD /* InferenceInput.swift in Sources */,
 				5E0950A2ED6DE3C81E2C9BE2 /* JSONValue.swift in Sources */,
 				14B0EC56CEE0BC6B57D88607 /* MarkdownView.swift in Sources */,
 				5E5BD0B6C8152188BD929069 /* NanoTheme.swift in Sources */,
@@ -458,6 +463,7 @@
 				01F0E85CC09F49D75BC676FB /* ComposerView.swift in Sources */,
 				7B8C4B3394DA62F01F52C5D1 /* DialogCards.swift in Sources */,
 				823A48D3648B9CFD6709EA1C /* FoundationModelService.swift in Sources */,
+				18DEB5004F5CBFD019A71B71 /* InferenceInput.swift in Sources */,
 				9770B29D95DD23E0005E94BE /* JSONValue.swift in Sources */,
 				3CF6F6AD74D06FDE5D4952C6 /* MarkdownView.swift in Sources */,
 				355385D89250ACB94FE7EAFA /* NanoTheme.swift in Sources */,
@@ -691,7 +697,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;

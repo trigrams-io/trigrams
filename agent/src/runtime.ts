@@ -5,6 +5,8 @@ import { createAgentSessionRuntime, createAgentSessionServices, createAgentSessi
 import { resolveProjectTrusted } from '../node_modules/@earendil-works/pi-coding-agent/dist/core/project-trust.js';
 import { NativeProvider, AFM_MODEL } from './provider.js';
 import { NativeUI } from './ui.js';
+import { createSkillIndexExtension } from './context.js';
+import { createToolOutputExtension, readToolOutput } from './tool-output.js';
 import { ProtocolError, stringParam, type Params } from './transport.js';
 
 type HostSettings = { systemPrompt: string; skillDirectories: string[]; disabledSkills: string[]; theme: string };
@@ -64,19 +66,21 @@ export class Runtime {
     const factory = async (target: { cwd: string; agentDir: string; sessionManager: SessionManager; sessionStartEvent?: Parameters<typeof createAgentSessionFromServices>[0]['sessionStartEvent'] }) => {
       const settingsManager = SettingsManager.create(target.cwd, this.options.agentDir);
       // AFM has a small context; upstream compaction remains responsible for history.
-      settingsManager.applyOverrides({ compaction: { enabled: true, reserveTokens: 1024, keepRecentTokens: 1536 }, defaultTools: ['+codemode', '+tool_search'] });
+      settingsManager.applyOverrides({ compaction: { enabled: true, reserveTokens: 1536, keepRecentTokens: 768 }, defaultTools: ['+tool_search'] });
       const trustUI = new NativeUI((event, params) => this.safeEmit(event, params), target.cwd, this.options.agentDir, () => {});
       this.ui = trustUI;
       const services = await createAgentSessionServices({ cwd: target.cwd, agentDir: this.options.agentDir, modelRuntime: this.modelRuntime!, settingsManager,
         resourceLoaderReloadOptions: { resolveProjectTrust: async ({extensionsResult}) => resolveProjectTrusted({ cwd: target.cwd, trustStore: new ProjectTrustStore(this.options.agentDir), defaultProjectTrust: settingsManager.getDefaultProjectTrust(), extensionsResult, projectTrustContext: { cwd: target.cwd, mode: this.nativeTUI ? 'tui' : 'rpc', hasUI: true, ui: trustUI.context }, onExtensionError: message => this.safeEmit('extension.error', { message }) }) },
         resourceLoaderOptions: {
-          extensionFactories: [createCodemodeExtension({ mode: 'on' }), createToolSearchExtension(), createMcpExtension()],
+          extensionFactories: [createSkillIndexExtension(this.options.agentDir), createToolOutputExtension(this.options.agentDir),
+            pi => createCodemodeExtension({ mode: 'on', inlineBudget: 0 })({ ...pi, registerTool: tool => pi.registerTool({ ...tool, exposure: 'deferred' }) }),
+            createToolSearchExtension(), createMcpExtension()],
           additionalSkillPaths: this.settings.skillDirectories,
           systemPromptOverride: base => this.settings.systemPrompt || base || this.defaultPrompt,
           skillsOverride: base => { this.allSkills = base.skills; return { ...base, skills: base.skills.filter(skill => !this.settings.disabledSkills.includes(skill.name) && !this.settings.disabledSkills.includes(skill.filePath)) }; },
         },
       });
-      const applyHostOverrides = () => settingsManager.applyOverrides({ compaction: { enabled: true, reserveTokens: 1024, keepRecentTokens: 1536 }, defaultTools: ['+codemode', '+tool_search'] });
+      const applyHostOverrides = () => settingsManager.applyOverrides({ compaction: { enabled: true, reserveTokens: 1536, keepRecentTokens: 768 }, defaultTools: ['+tool_search'] });
       // pi reload reconstructs merged settings, so reapply host-local inference defaults afterward.
       const reloadResources = services.resourceLoader.reload.bind(services.resourceLoader);
       services.resourceLoader.reload = async options => { await reloadResources(options); applyHostOverrides(); };
@@ -115,8 +119,9 @@ export class Runtime {
   private async describe(session = this.session) {
     const path = session.sessionFile ?? '';
     const updatedAt = path ? await stat(path).then(s => s.mtime.toISOString()).catch(() => new Date().toISOString()) : new Date().toISOString();
-    const first = session.messages.find(m => m.role === 'user');
-    const title = session.sessionManager.getSessionName() || (first && typeof first.content === 'string' ? first.content.slice(0, 80) : 'New chat');
+    const first = session.sessionManager.getBranch().flatMap(entry => entry.type === 'message' && entry.message.role === 'user' ? [entry.message] : [])[0];
+    const text = first && (typeof first.content === 'string' ? first.content : first.content.filter(block => block.type === 'text').map(block => block.text).join('\n'));
+    const title = session.sessionManager.getSessionName() || text?.trim().slice(0, 80) || 'New chat';
     return { id: session.sessionId, path, title, cwd: session.sessionManager.getCwd(), updatedAt };
   }
   private finalStatus(session: AgentSession): 'stopped' | 'error' | 'idle' {
@@ -172,8 +177,9 @@ export class Runtime {
           await this.createRuntime(cwd, manager); this.stopped = false; return this.view();
         }
         case 'session.open': {
-          await this.stop(); const path = resolve(stringParam(params, 'path'));
+          const path = resolve(stringParam(params, 'path'));
           if (this.sdk?.session.sessionFile === path) { if (!this.ui) await this.bind(); return this.view(); }
+          await this.stop();
           await stat(path);
           if (this.sdk) await this.sdk.switchSession(path);
           else { const manager = SessionManager.open(path, join(this.options.agentDir, 'sessions')); await this.createRuntime(manager.getCwd(), manager); }
@@ -189,6 +195,7 @@ export class Runtime {
         case 'session.compact': await this.stop(); await this.session.compact(typeof params.instructions === 'string' ? params.instructions : undefined); await this.snapshot(); return this.view();
         case 'session.export': return { path: await this.session.exportToHtml(typeof params.path === 'string' ? params.path : undefined) };
         case 'session.tools': return { tools: this.session.getAllTools(), active: this.session.getActiveToolNames() };
+        case 'tool.output': return { result: await readToolOutput(this.options.agentDir, stringParam(params, 'id')) };
         case 'resources.list': return this.resources();
         case 'resources.reload': await this.stop(); await this.session.reload(); return this.resources();
         case 'settings.update': {

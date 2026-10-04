@@ -4,21 +4,41 @@ struct SidebarView: View {
     @Bindable var model: AppModel
     @Environment(\.nanoPalette) private var palette
     @FocusState private var searchFocused: Bool
+    @State private var searchVisible = false
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            TrigramsButton(label: String(localized: "New chat"), icon: .plus, variant: .outlined, identifier: "newChatButton") { Task { await model.newChat() } }
+            Button { Task { await model.newChat() } } label: {
+                HStack(spacing: 10) {
+                    PhosphorIcon(icon: .chats, size: 18)
+                    Text("New chat").font(TrigramsFont.medium(13))
+                    Spacer()
+                    PhosphorIcon(icon: .plus, size: 16)
+                }.frame(maxWidth: .infinity, alignment: .leading)
+            }
+                .buttonStyle(TrigramsButtonStyle())
+                .foregroundStyle(palette.accentText)
+                .background(palette.salient.opacity(0.09), in: RoundedRectangle(cornerRadius: 8))
+                .accessibilityIdentifier("newChatButton")
                 .disabled(model.connection != .ready || model.isLoading || model.isWorking)
                 .keyboardShortcut("n", modifiers: .command)
                 .padding(.top, 16)
-            FieldSurface(focused: searchFocused) {
-                HStack(spacing: 7) {
-                    PhosphorIcon(icon: .magnifyingGlass, size: 16).foregroundStyle(palette.secondary)
+            HStack {
+                Text("Chats").font(TrigramsFont.medium(12)).foregroundStyle(palette.secondary)
+                Spacer()
+                IconButton(icon: .magnifyingGlass, label: String(localized: "Search chats"), identifier: "chatSearchButton") {
+                    searchVisible.toggle()
+                    searchFocused = searchVisible
+                    if !searchVisible { model.searchText = "" }
+                }
+            }
+            if searchVisible {
+                FieldSurface(focused: searchFocused) {
                     TextField(String(localized: "Search chats"), text: $model.searchText)
                         .textFieldStyle(.plain).font(TrigramsFont.body(13)).focused($searchFocused)
                         .accessibilityIdentifier("chatSearchField")
+                        .onExitCommand { searchVisible = false; model.searchText = "" }
                 }
             }
-            Text("Chats").font(TrigramsFont.medium(12)).foregroundStyle(palette.secondary).padding(.top, 4)
             ScrollView {
                 LazyVStack(spacing: 4) {
                     ForEach(model.filteredSessions) { session in

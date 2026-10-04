@@ -44,8 +44,34 @@ final class FoundationModelService {
             throw InferenceFailure(code: "model.unavailable", message: availability["reason"].string ?? "Model unavailable")
         }
         let schema = try ActionSchema.make(tools: request["tools"].array ?? [])
+        let input = try InferenceInput(request)
+        let instructionsText = request["instructions"].string ?? ""
+        var instructions = Self.estimate(instructionsText)
+        var prompt = Self.estimate(input.prompt)
+        var schemaTokens = Self.estimate(String(decoding: try JSONEncoder().encode(schema), as: UTF8.self))
+        var contextSize = 4096
+        var measured = false
+        #if compiler(>=6.3)
+        if #available(macOS 26.4, *), !testing {
+            let model = SystemLanguageModel.default
+            instructions = try await model.tokenCount(for: Instructions(instructionsText))
+            prompt = try await model.tokenCount(for: input.prompt)
+            schemaTokens = try await model.tokenCount(for: schema)
+            contextSize = model.contextSize
+            measured = true
+        }
+        #endif
+        let reserve = (request["maxTokens"].int ?? 768) + 256
+        guard instructions + prompt + schemaTokens + reserve <= contextSize else {
+            throw InferenceFailure(code: "model.context", message: "Input exceeds the context window (\(measured ? "measured" : "estimated")): instructions \(instructions), conversation \(prompt), tool schema \(schemaTokens), response reserve \(reserve) of \(contextSize) tokens. Compact the chat with /compact, shorten your system prompt, or read smaller file pages.")
+        }
+        let budget: JSONValue = .object(["instructions": .number(Double(instructions)), "conversation": .number(Double(prompt)), "schema": .number(Double(schemaTokens)), "responseReserve": .number(Double(reserve)), "contextSize": .number(Double(contextSize)), "measured": .bool(measured)])
         #if DEBUG
-        if testing { return try await deterministicResponse(request, delta: delta) }
+        if testing {
+            var response = try await deterministicResponse(request, delta: delta).object ?? [:]
+            response["contextBudget"] = budget
+            return .object(response)
+        }
         #endif
         // A fresh session avoids duplicating the history maintained by pi.
         let session = LanguageModelSession(instructions: request["instructions"].string ?? "")
@@ -54,22 +80,40 @@ final class FoundationModelService {
         #else
         let options = GenerationOptions(sampling: .greedy, maximumResponseTokens: request["maxTokens"].int ?? 768)
         #endif
-        let stream = session.streamResponse(to: request["prompt"].string ?? "", schema: schema, options: options)
+        let stream = session.streamResponse(to: input.prompt, schema: schema, options: options)
         var final: JSONValue = .null
         var text = ""
-        for try await snapshot in stream {
-            try Task.checkCancellation()
-            final = try JSONDecoder().decode(JSONValue.self, from: Data(snapshot.content.jsonString.utf8))
-            let current = final["text"].string ?? ""
-            if current.hasPrefix(text), current != text {
-                try await delta(String(current.dropFirst(text.count)))
-                text = current
+        do {
+            for try await snapshot in stream {
+                try Task.checkCancellation()
+                final = try JSONDecoder().decode(JSONValue.self, from: Data(snapshot.content.jsonString.utf8))
+                let current = final["text"].string ?? ""
+                if current.hasPrefix(text), current != text {
+                    try await delta(String(current.dropFirst(text.count)))
+                    text = current
+                }
             }
+        } catch {
+            #if compiler(>=6.4)
+            if #available(macOS 27.0, *), let failure = error as? LanguageModelError, case .contextSizeExceeded = failure {
+                throw contextFailure()
+            }
+            #endif
+            if let failure = error as? LanguageModelSession.GenerationError, case .exceededContextWindowSize = failure { throw contextFailure() }
+            throw error
         }
         guard final.object != nil, final["text"].string != nil else {
             throw InferenceFailure(code: "schema.response", message: "The model did not produce a complete action.")
         }
-        return .object(["text": final["text"], "toolCalls": final["toolCalls"].array.map(JSONValue.array) ?? .array([])])
+        return .object(["text": final["text"], "toolCalls": final["toolCalls"].array.map(JSONValue.array) ?? .array([]), "contextBudget": budget])
+    }
+
+    private static func estimate(_ text: String) -> Int {
+        Int(ceil(text.unicodeScalars.reduce(0.0) { $0 + ($1.isASCII ? 1.0 / 3.0 : 1.0) }))
+    }
+
+    private func contextFailure() -> InferenceFailure {
+        InferenceFailure(code: "model.context", message: "Input exceeds the context window. Compact the chat with /compact, shorten your system prompt, or read smaller file pages.")
     }
 
     private func status(_ available: Bool, _ reason: String) -> JSONValue {
@@ -126,18 +170,18 @@ final class FoundationModelService {
 enum ActionSchema {
     static func make(tools: [JSONValue]) throws -> GenerationSchema {
         var properties: [DynamicGenerationSchema.Property] = [
-            .init(name: "text", description: "Answer the user, or briefly describe the pending tool calls.", schema: .init(type: String.self))
+            .init(name: "text", description: "Answer the latest user request in the user's language. Leave empty when calling a tool.", schema: .init(type: String.self))
         ]
         if !tools.isEmpty {
             let calls = try tools.enumerated().map { index, tool in
                 guard let name = tool["name"].string else { throw unsupported("A tool is missing its name.") }
-                return DynamicGenerationSchema(name: "ToolCall\(index)", description: tool["description"].string, properties: [
+                return DynamicGenerationSchema(name: "ToolCall\(index)", description: toolDescription(name, fallback: tool["description"].string), properties: [
                     .init(name: "name", schema: .init(name: "ToolName\(index)", anyOf: [name])),
                     .init(name: "arguments", schema: try convert(tool["parameters"], name: "Arguments\(index)"))
                 ])
             }
             let choice = DynamicGenerationSchema(name: "ToolCall", anyOf: calls)
-            properties.append(.init(name: "toolCalls", description: "Only use tools when needed. Return an empty array for a final answer.", schema: .init(arrayOf: choice, maximumElements: 8), isOptional: true))
+            properties.append(.init(name: "toolCalls", description: "Only use tools when needed. Return an empty array for a final answer.", schema: .init(arrayOf: choice, maximumElements: 2), isOptional: true))
         }
         return try GenerationSchema(root: .init(name: "AgentAction", properties: properties), dependencies: [])
     }
@@ -165,7 +209,7 @@ enum ActionSchema {
             let fields = schema["properties"]?.object ?? [:]
             guard required.isSubset(of: Set(fields.keys)) else { throw unsupported("\(name) requires undeclared fields.") }
             let properties = try fields.keys.sorted().map { key in
-                DynamicGenerationSchema.Property(name: key, description: fields[key]?["description"].string, schema: try convert(fields[key] ?? .null, name: "\(name)_\(key)"), isOptional: !required.contains(key))
+                DynamicGenerationSchema.Property(name: key, description: fields[key]?["description"].string.map { String($0.prefix(160)) }, schema: try convert(fields[key] ?? .null, name: "\(name)_\(key)"), isOptional: !required.contains(key))
             }
             return .init(name: name, description: schema["description"]?.string, properties: properties)
         case "array":
@@ -188,5 +232,18 @@ enum ActionSchema {
 
     private static func unsupported(_ message: String) -> InferenceFailure {
         InferenceFailure(code: "schema.unsupported", message: message)
+    }
+
+    private static func toolDescription(_ name: String, fallback: String?) -> String? {
+        // Descriptions affect inference only. Original JSON Schema validation
+        // and every pi implementation remain authoritative in the sidecar.
+        switch name {
+        case "read": return "Read a file. Use offset and limit for small pages."
+        case "bash": return "Execute a bash command in the workspace. Keep output small."
+        case "edit": return "Replace exact oldText with newText in a file."
+        case "write": return "Write content to a file, creating parent directories."
+        case "tool_search": return "Search and activate extra tools, including codemode. Use limit 1."
+        default: return fallback
+        }
     }
 }

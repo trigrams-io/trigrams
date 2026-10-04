@@ -84,9 +84,10 @@ final class RuntimeClient: AppRuntimeServing {
                 let code = child.terminationStatus
                 Task { @MainActor in
                     guard let self, self.process === child else { return }
-                    self.fail(RuntimeFailure(code: "runtime.exited", message: "The agent stopped (exit \(code)). See the local agent log for details."))
-                    self.onNotification?("runtime.disconnected", .object(["message": .string("The agent process stopped.")]))
+                    let message = "The agent stopped (exit \(code)). See the local agent log for details."
+                    self.fail(RuntimeFailure(code: "runtime.exited", message: message))
                     self.stop()
+                    self.onNotification?("runtime.disconnected", .object(["message": .string(message)]))
                 }
             }
             process = child
@@ -167,12 +168,12 @@ final class RuntimeClient: AppRuntimeServing {
             connecting = continuation
             connection.stateUpdateHandler = { [weak self] state in
                 Task { @MainActor in
-                    guard let self else { return }
+                    guard let self, self.connection === connection else { return }
                     switch state {
                     case .ready:
                         self.connecting?.resume()
                         self.connecting = nil
-                        self.receive()
+                        self.receive(connection)
                     case .failed(let error): self.fail(RuntimeFailure(code: "transport.connect", message: error.localizedDescription))
                     case .waiting(let error): self.fail(RuntimeFailure(code: "transport.connect", message: error.localizedDescription))
                     case .cancelled: self.fail(RuntimeFailure(code: "transport.closed", message: "The agent disconnected."))
@@ -184,17 +185,18 @@ final class RuntimeClient: AppRuntimeServing {
         }
     }
 
-    private func receive() {
-        connection?.receive(minimumIncompleteLength: 1, maximumLength: 64 * 1024) { [weak self] data, _, complete, error in
+    private func receive(_ connection: NWConnection) {
+        connection.receive(minimumIncompleteLength: 1, maximumLength: 64 * 1024) { [weak self] data, _, complete, error in
             let message = error?.localizedDescription
             Task { @MainActor in
-                guard let self else { return }
+                guard let self, self.connection === connection else { return }
                 do {
                     if let data { try self.consume(data) }
                     if complete || message != nil {
                         self.fail(RuntimeFailure(code: "transport.closed", message: message ?? "The agent disconnected."))
+                        self.stop()
                         self.onNotification?("runtime.disconnected", .object(["message": .string(message ?? "The agent disconnected.")]))
-                    } else { self.receive() }
+                    } else { self.receive(connection) }
                 } catch {
                     self.fail(error)
                     self.stop()

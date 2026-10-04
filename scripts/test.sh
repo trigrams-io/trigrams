@@ -21,6 +21,6 @@ xcodebuild -project "$ROOT/apps/Trigrams/Trigrams.xcodeproj" -scheme Trigrams \
   -clonedSourcePackagesDirPath "$BUILD_DIR/SourcePackages" \
   -packageCachePath "$BUILD_DIR/PackageCache" \
   -enableCodeCoverage YES -parallel-testing-enabled NO \
-  TRIGRAMS_TEST_TEMP="$TRIGRAMS_TMP" CODE_SIGN_IDENTITY=- test
+  TRIGRAMS_TEST_TEMP="$TRIGRAMS_TMP" CODE_SIGN_IDENTITY="$TRIGRAMS_SIGN_IDENTITY" test
 node scripts/coverage-swift.mjs "$BUILD_DIR/UITests.xcresult" "$BUILD_DIR/coverage/swift.lcov"
 node scripts/coverage-gate.mjs build/coverage/swift.lcov build/coverage/runtime/lcov.info

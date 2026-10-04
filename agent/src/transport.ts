@@ -80,8 +80,13 @@ export class Transport {
   }
   private send(socket: Socket, value: unknown) {
     if (socket.destroyed || !socket.writable) return;
-    const frame = JSON.stringify(value) + '\n';
-    if (Buffer.byteLength(frame) > MAX_FRAME || socket.writableLength + Buffer.byteLength(frame) > MAX_BUFFER) { socket.destroy(new Error('Protocol backpressure limit exceeded.')); return; }
+    let frame = JSON.stringify(value) + '\n';
+    if (Buffer.byteLength(frame) > MAX_FRAME) {
+      const id = (value as { id?: string }).id;
+      const message = 'The result exceeds the local transport limit. Read the original file in smaller pages.';
+      frame = JSON.stringify(id ? { id, error: { code: 'transport.frame', message } } : { event: 'runtime.error', params: { message } }) + '\n';
+    }
+    if (socket.writableLength + Buffer.byteLength(frame) > MAX_BUFFER) { socket.destroy(new Error('Protocol backpressure limit exceeded.')); return; }
     socket.write(frame);
   }
   emit(event: string, params: unknown) {

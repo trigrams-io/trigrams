@@ -4,7 +4,6 @@ import SwiftUI
 struct RootView: View {
     @Bindable var model: AppModel
     @Environment(\.colorScheme) private var colorScheme
-    @State private var window: NSWindow?
     @State private var sidebarWidth: CGFloat = 256
     @State private var dragStartWidth: CGFloat?
     private var palette: NanoPalette { NanoPalette(isDark: model.theme == .dark || model.theme == .system && colorScheme == .dark) }
@@ -30,7 +29,8 @@ struct RootView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
             }
-            .disabled(model.settingsVisible || model.branchVisible || model.dialog != nil || model.compatibilityVisible)
+            .allowsHitTesting(!modalVisible)
+            .accessibilityHidden(modalVisible)
             if model.showModelDetails { modelDetails.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing).padding(.top, 90).padding(.trailing, 20) }
             if model.settingsVisible { overlay { SettingsView(model: model) } }
             if model.branchVisible { overlay { BranchCard(model: model) } }
@@ -42,29 +42,34 @@ struct RootView: View {
         .background(palette.background)
         .environment(\.nanoPalette, palette)
         .preferredColorScheme(model.theme == .system ? nil : model.theme == .dark ? .dark : .light)
-        .background { WindowConfiguration(window: $window).frame(width: 0, height: 0) }
+        .background { WindowConfiguration().frame(width: 0, height: 0) }
         .frame(minWidth: 800, minHeight: 560)
         .ignoresSafeArea()
         .task { await model.start() }
     }
+    private var modalVisible: Bool { model.settingsVisible || model.branchVisible || model.dialog != nil || model.compatibilityVisible }
     private var titlebar: some View {
         HStack(spacing: 10) {
-            WindowChrome(window: $window)
+            // Leave room for AppKit's standard traffic lights.
+            Color.clear.frame(width: 68, height: 1).accessibilityHidden(true)
+            IconButton(icon: .sidebar, label: String(localized: "Toggle sidebar"), identifier: "sidebarToggleButton") { model.sidebarVisible.toggle() }
+                .keyboardShortcut("b", modifiers: .command)
             Image("trigrams-mark").resizable().renderingMode(.template).scaledToFit()
                 .frame(width: 28, height: 28).foregroundStyle(palette.salient).accessibilityHidden(true)
             Text("Trigrams").font(TrigramsFont.medium(15))
             Spacer()
             Text(model.selectedSession?.title ?? String(localized: "New chat"))
                 .font(TrigramsFont.medium(13)).lineLimit(1).foregroundStyle(palette.secondary)
+                .accessibilityIdentifier("chatTitle")
             Spacer()
             if !model.sidebarVisible {
+                IconButton(icon: .plus, label: String(localized: "New chat"), identifier: "newChatButton") { Task { await model.newChat() } }
+                    .disabled(model.connection != .ready || model.isLoading || model.isWorking)
+                    .keyboardShortcut("n", modifiers: .command)
                 IconButton(icon: .settings, label: String(localized: "Settings"), identifier: "settingsButton") { model.settingsVisible = true }
             }
-            IconButton(icon: .sidebar, label: String(localized: "Toggle sidebar"), identifier: "sidebarToggleButton") { model.sidebarVisible.toggle() }
-                .keyboardShortcut("b", modifiers: .command)
         }
         .padding(.horizontal, 10).frame(height: 46)
-        .background { WindowDragRegion() }
         .background(palette.highlight)
     }
     private var chatHeader: some View {

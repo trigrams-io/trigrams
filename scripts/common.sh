@@ -29,3 +29,11 @@ case "$(uname -m)" in
 esac
 NODE_ROOT="$BUILD_DIR/tools/node-v$NODE_VERSION-darwin-$NODE_ARCH"
 export PATH="$NODE_ROOT/bin:$PATH"
+
+# A stable developer signature lets macOS reuse local Files and Folders grants
+# across rebuilds. CI has no developer key and deliberately remains ad-hoc.
+TRIGRAMS_SIGN_IDENTITY="${TRIGRAMS_CODE_SIGN_IDENTITY:--}"
+if [[ "${GITHUB_ACTIONS:-}" != "true" && -z "${TRIGRAMS_CODE_SIGN_IDENTITY:-}" ]]; then
+  TRIGRAMS_SIGN_IDENTITY="$(security find-identity -v -p codesigning | awk '/"Apple Development:/ { print $2; exit }')"
+  [[ -n "$TRIGRAMS_SIGN_IDENTITY" ]] || TRIGRAMS_SIGN_IDENTITY=-
+fi

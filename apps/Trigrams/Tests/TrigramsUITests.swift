@@ -7,6 +7,66 @@ import XCTest
 final class TrigramsUITests: XCTestCase {
     private let response = "Trigrams completed the request."
 
+    func testSidecarRestartPreservesTheSelectedChatAndIgnoresOldConnections() throws {
+        let fixture = try makeFixture()
+        let app = launch(fixture)
+        defer { app.terminate(); try? FileManager.default.removeItem(at: fixture) }
+        replace(app.textViews["composerInput"], with: "Keep this chat after a sidecar restart", in: app)
+        click(app.buttons["sendButton"])
+        XCTAssertTrue(app.staticTexts[response].firstMatch.waitForExistence(timeout: 25))
+        waitEnabled(app.buttons["newChatButton"])
+        for _ in 0..<2 {
+            let running = try XCTUnwrap(NSRunningApplication.runningApplications(withBundleIdentifier: "io.trigrams.app").first)
+            let childLookup = Process()
+            let output = Pipe()
+            childLookup.executableURL = URL(fileURLWithPath: "/usr/bin/pgrep")
+            childLookup.arguments = ["-P", String(running.processIdentifier)]
+            childLookup.standardOutput = output
+            try childLookup.run()
+            childLookup.waitUntilExit()
+            let children = String(data: output.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8)?.split(separator: "\n").compactMap { Int32($0) } ?? []
+            XCTAssertFalse(children.isEmpty)
+            for child in children { XCTAssertEqual(kill(child, SIGTERM), 0) }
+            XCTAssertTrue(app.buttons["retryRuntimeButton"].waitForExistence(timeout: 10))
+            click(app.buttons["retryRuntimeButton"])
+            waitEnabled(app.buttons["newChatButton"])
+            XCTAssertEqual(app.staticTexts["chatTitle"].label, "Keep this chat after a sidecar restart")
+            XCTAssertTrue(app.staticTexts[response].firstMatch.exists)
+        }
+        replace(app.textViews["composerInput"], with: "Continue after restarting", in: app)
+        click(app.buttons["sendButton"])
+        XCTAssertTrue(app.staticTexts["Continue after restarting"].firstMatch.waitForExistence(timeout: 10))
+        waitEnabled(app.buttons["newChatButton"])
+        XCTAssertFalse(app.buttons["retryRuntimeButton"].exists)
+    }
+
+    func testSearchIsCompactAndComposerAdaptsToSidebarAndWindowSize() throws {
+        let fixture = try makeFixture()
+        let app = launch(fixture)
+        defer { app.terminate(); try? FileManager.default.removeItem(at: fixture) }
+        XCTAssertFalse(app.textFields["chatSearchField"].exists)
+        XCTAssertFalse(app.buttons["composerSkillsButton"].exists)
+        click(app.buttons["chatSearchButton"])
+        XCTAssertTrue(app.textFields["chatSearchField"].waitForExistence(timeout: 5))
+        click(app.buttons["chatSearchButton"])
+        XCTAssertFalse(app.textFields["chatSearchField"].exists)
+        let editor = app.textViews["composerInput"]
+        let initial = editor.frame.width
+        click(app.buttons["sidebarToggleButton"])
+        XCTAssertGreaterThan(editor.frame.width, initial + 180)
+        click(app.buttons["sidebarToggleButton"])
+        let window = app.windows.firstMatch
+        let corner = window.coordinate(withNormalizedOffset: CGVector(dx: 1, dy: 1)).withOffset(CGVector(dx: -2, dy: -2))
+        corner.press(forDuration: 0.1, thenDragTo: corner.withOffset(CGVector(dx: 140, dy: 50)))
+        XCTAssertGreaterThan(editor.frame.width, initial + 80)
+        click(app.buttons["settingsButton"])
+        for theme in ["light", "dark", "system"] { XCTAssertTrue(app.buttons["theme.\(theme)"].isHittable) }
+        let panel = app.descendants(matching: .any)["settingsPanel"]
+        XCTAssertLessThan(panel.frame.width, window.frame.width)
+        XCTAssertLessThan(panel.frame.height, window.frame.height)
+        click(app.buttons["closeSettingsButton"])
+    }
+
     func testChatPersistsAndReopensAfterRelaunch() throws {
         let fixture = try makeFixture()
         let app = launch(fixture)
@@ -27,10 +87,17 @@ final class TrigramsUITests: XCTestCase {
         click(app.buttons["sendButton"])
         XCTAssertTrue(app.staticTexts[response].firstMatch.waitForExistence(timeout: 25))
         waitEnabled(app.buttons["newChatButton"])
+        XCTAssertFalse(app.textFields["chatSearchField"].exists)
+        click(app.buttons["chatSearchButton"])
         let search = app.textFields["chatSearchField"]
         replace(search, with: "Remember this", in: app)
         click(app.descendants(matching: .any)[firstSession])
         XCTAssertTrue(app.staticTexts["Remember this end-to-end conversation"].firstMatch.waitForExistence(timeout: 10))
+        XCTAssertEqual(app.staticTexts["chatTitle"].label, "Remember this end-to-end conversation")
+        XCTAssertEqual(app.descendants(matching: .any)[firstSession].label, "Remember this end-to-end conversation")
+        replace(app.textViews["composerInput"], with: "An unsent draft", in: app)
+        click(app.descendants(matching: .any)[firstSession])
+        XCTAssertEqual(app.textViews["composerInput"].value as? String, "An unsent draft")
         replace(search, with: "", in: app)
 
         app.terminate()
@@ -39,6 +106,7 @@ final class TrigramsUITests: XCTestCase {
         click(app.descendants(matching: .any)[firstSession])
         XCTAssertTrue(app.staticTexts[response].firstMatch.waitForExistence(timeout: 10), "The assistant response must be read from the persisted pi session.")
         XCTAssertTrue(app.staticTexts["Remember this end-to-end conversation"].firstMatch.exists)
+        XCTAssertEqual(app.staticTexts["chatTitle"].label, "Remember this end-to-end conversation")
 
         // The visible result must also exist in pi's actual JSONL store.
         let enumerator = FileManager.default.enumerator(at: fixture.appending(path: "data"), includingPropertiesForKeys: nil)
@@ -179,6 +247,25 @@ final class TrigramsUITests: XCTestCase {
         waitValue(tool, containing: "Collapsed")
     }
 
+    func testLargeToolResultShowsPagedPreviewAndCompleteOriginal() throws {
+        let fixture = try makeFixture()
+        let contents = String(repeating: "工具结果需要完整保存。\n", count: 400) + "ORIGINAL_FINAL_LINE"
+        try contents.write(to: fixture.appending(path: "workspace/large.txt"), atomically: true, encoding: .utf8)
+        let app = launch(fixture)
+        defer { app.terminate(); try? FileManager.default.removeItem(at: fixture) }
+        replace(app.textViews["composerInput"], with: "[read:large.txt] Read the large fixture", in: app)
+        click(app.buttons["sendButton"])
+        let reply = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Read file: Paged tool output")).firstMatch
+        XCTAssertTrue(reply.waitForExistence(timeout: 25), app.debugDescription)
+        let tool = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "toolRecord.")).firstMatch
+        click(tool)
+        let id = String(tool.identifier.dropFirst("toolRecord.".count))
+        click(app.buttons["completeToolResult.\(id)"])
+        let raw = app.staticTexts["rawToolResult.\(id)"]
+        XCTAssertTrue(raw.waitForExistence(timeout: 10))
+        XCTAssertTrue(raw.label.contains("ORIGINAL_FINAL_LINE"))
+    }
+
     func testBranchForkAndSidebarVisibility() throws {
         let fixture = try makeFixture()
         let app = launch(fixture)
@@ -193,9 +280,9 @@ final class TrigramsUITests: XCTestCase {
         let rows = app.descendants(matching: .any).matching(NSPredicate(format: "identifier BEGINSWITH %@", "chatRow."))
         let originalSession = rows.firstMatch.identifier
         click(app.buttons["sidebarToggleButton"])
-        XCTAssertFalse(app.textFields["chatSearchField"].exists)
+        XCTAssertFalse(app.buttons["chatSearchButton"].exists)
         click(app.buttons["sidebarToggleButton"])
-        XCTAssertTrue(app.textFields["chatSearchField"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["chatSearchButton"].waitForExistence(timeout: 5))
 
         click(app.buttons["branchButton"])
         let entry = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@ AND label CONTAINS %@", "branchEntry.", original)).firstMatch
@@ -219,8 +306,6 @@ final class TrigramsUITests: XCTestCase {
         replace(app.textViews["composerInput"], with: "/native-dialogs", in: app)
         click(app.buttons["sendButton"])
         XCTAssertTrue(app.staticTexts["Native confirmation"].waitForExistence(timeout: 10))
-        XCTAssertTrue(app.staticTexts["Native extension ready"].firstMatch.exists)
-        XCTAssertTrue(app.staticTexts["Native widget content"].firstMatch.exists)
         click(app.buttons["dialogAcceptButton"])
         XCTAssertTrue(app.staticTexts["Native selection"].waitForExistence(timeout: 10))
         click(app.buttons["dialogOption.two"])
@@ -371,12 +456,16 @@ final class TrigramsUITests: XCTestCase {
             // Paste through the real editor so tests are independent of the
             // Mac's active input method and keyboard layout.
             let pasteboard = NSPasteboard.general
-            let previous = pasteboard.string(forType: .string)
+            let previous: [NSPasteboardItem] = pasteboard.pasteboardItems?.map { item in
+                let copy = NSPasteboardItem()
+                for type in item.types { if let data = item.data(forType: type) { copy.setData(data, forType: type) } }
+                return copy
+            } ?? []
             pasteboard.clearContents()
             pasteboard.setString(text, forType: .string)
             app.typeKey("v", modifierFlags: .command)
             pasteboard.clearContents()
-            if let previous { pasteboard.setString(previous, forType: .string) }
+            if !previous.isEmpty { pasteboard.writeObjects(previous) }
         }
     }
 

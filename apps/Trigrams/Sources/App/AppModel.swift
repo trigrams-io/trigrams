@@ -80,7 +80,7 @@ final class AppModel {
             try await runtime.start()
             await loadSettings()
             await refreshSessions()
-            if let session = sessions.first { await open(session) }
+            if let session = sessions.first(where: { $0.id == selectedSession?.id }) ?? sessions.first { await open(session, restoring: true) }
             else { applySnapshot(try await runtime.request("session.create", params: [:])) }
             await reloadResources(reload: false)
             connection = .ready
@@ -95,6 +95,16 @@ final class AppModel {
         didStart = false
         errorMessage = nil
         await start()
+    }
+
+    func completeToolOutput(_ id: String) async -> JSONValue? {
+        do {
+            let value = try await runtime.request("tool.output", params: ["id": .string(id)])["result"]
+            return value == .null ? nil : value
+        } catch {
+            errorMessage = error.localizedDescription
+            return nil
+        }
     }
 
     func refreshSessions() async {
@@ -119,8 +129,9 @@ final class AppModel {
         } catch { errorMessage = error.localizedDescription }
     }
 
-    func open(_ session: ChatSession) async {
+    func open(_ session: ChatSession, restoring: Bool = false) async {
         guard !isWorking, !isLoading else { return }
+        guard restoring || session.id != selectedSession?.id else { return }
         pendingPath = session.path
         isLoading = true
         defer { isLoading = false }
@@ -364,6 +375,7 @@ final class AppModel {
             if terminalFrames.count > 1_024 { terminalFrames.removeFirst(terminalFrames.count - 1_024) }
         case "ui.tui.close": compatibilityVisible = false
         case "runtime.interrupted", "runtime.disconnected":
+            editorSync?.cancel()
             runStatus = .interrupted
             connection = .failed
             isStopping = false

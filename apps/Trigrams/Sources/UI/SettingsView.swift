@@ -4,45 +4,62 @@ struct SettingsView: View {
     @Bindable var model: AppModel
     @Environment(\.nanoPalette) private var palette
     var body: some View {
+        GeometryReader { geometry in
+            panel(height: min(760, geometry.size.height - 48))
+                .frame(width: min(1000, geometry.size.width - 64), height: min(760, geometry.size.height - 48))
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+    }
+
+    private func panel(height: CGFloat) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
                 Text("Settings").font(TrigramsFont.medium(20)).foregroundStyle(palette.strong)
                 Spacer()
                 IconButton(icon: .close, label: String(localized: "Close settings"), identifier: "closeSettingsButton") { model.settingsVisible = false }
             }.padding(24)
-            HStack(spacing: 6) {
-                tab(.appearance, label: String(localized: "Appearance"), icon: .sun)
-                tab(.systemPrompt, label: String(localized: "System prompt"), icon: .chats)
-                tab(.skills, label: String(localized: "Skills"), icon: .book)
-                Spacer()
-            }.padding(.horizontal, 24).padding(.bottom, 16)
             DividerLine()
-            ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
-                    switch model.settingsTab {
-                    case .appearance: appearance
-                    case .systemPrompt: systemPrompt
-                    case .skills: skills
-                    }
-                    if let notice = model.settingsNotice {
-                        HStack(spacing: 8) { PhosphorIcon(icon: .check, size: 16); Text(notice).font(TrigramsFont.body(13)) }
-                            .foregroundStyle(palette.successText).accessibilityIdentifier("settingsNotice")
-                    }
-                }.padding(24).frame(maxWidth: .infinity, alignment: .leading)
-            }.scrollIndicators(.hidden)
+            HStack(alignment: .top, spacing: 0) {
+                VStack(alignment: .leading, spacing: 6) {
+                    tab(.appearance, label: String(localized: "Appearance"), icon: .sun)
+                    tab(.systemPrompt, label: String(localized: "System prompt"), icon: .chats)
+                    tab(.skills, label: String(localized: "Skills"), icon: .book)
+                    Spacer()
+                }.padding(12).frame(width: 180).frame(maxHeight: .infinity).background(palette.highlight)
+                Rectangle().fill(palette.subtle).frame(width: 1)
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 24) {
+                        switch model.settingsTab {
+                        case .appearance: appearance
+                        case .systemPrompt: systemPrompt(height: max(160, height - 275))
+                        case .skills: skills
+                        }
+                        if let notice = model.settingsNotice {
+                            HStack(spacing: 8) { PhosphorIcon(icon: .check, size: 16); Text(notice).font(TrigramsFont.body(13)) }
+                                .foregroundStyle(palette.successText).accessibilityIdentifier("settingsNotice")
+                        }
+                    }.padding(28).frame(maxWidth: .infinity, alignment: .leading)
+                }.scrollIndicators(.hidden)
+            }
         }
         .foregroundStyle(palette.foreground)
-        .frame(width: 680, height: 550)
         .background(palette.background, in: RoundedRectangle(cornerRadius: 12))
-        .overlay { RoundedRectangle(cornerRadius: 12).stroke(palette.inputBorder, lineWidth: 1) }
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .overlay { RoundedRectangle(cornerRadius: 12).stroke(palette.subtle, lineWidth: 1) }
+        .accessibilityElement(children: .contain)
         .accessibilityIdentifier("settingsPanel")
     }
 
     private func tab(_ tab: AppModel.SettingsTab, label: String, icon: Phosphor) -> some View {
-        TrigramsButton(label: label, icon: icon, variant: model.settingsTab == tab ? .selected : .plain, identifier: "settingsTab.\(tab.rawValue)") {
+        Button {
             model.settingsTab = tab
             model.settingsNotice = nil
-        }.accessibilityValue(model.settingsTab == tab ? String(localized: "Selected") : String(localized: "Unselected"))
+        } label: {
+            HStack(spacing: 8) { PhosphorIcon(icon: icon, size: 16); Text(label); Spacer(minLength: 0) }
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }.buttonStyle(TrigramsButtonStyle(variant: model.settingsTab == tab ? .selected : .plain))
+            .accessibilityIdentifier("settingsTab.\(tab.rawValue)")
+            .accessibilityValue(model.settingsTab == tab ? String(localized: "Selected") : String(localized: "Unselected"))
     }
 
     private var appearance: some View {
@@ -54,7 +71,7 @@ struct SettingsView: View {
                 ForEach(AppTheme.allCases) { theme in
                     Button { Task { await model.setTheme(theme) } } label: {
                         VStack(alignment: .leading, spacing: 12) {
-                            ThemePreview(theme: theme).frame(height: 84)
+                            ThemePreview(theme: theme).frame(height: 100)
                             HStack {
                                 Text(theme.label).font(TrigramsFont.medium(13))
                                 Spacer()
@@ -62,7 +79,9 @@ struct SettingsView: View {
                             }
                         }.frame(maxWidth: .infinity)
                     }
-                    .buttonStyle(TrigramsButtonStyle(variant: model.theme == theme ? .selected : .outlined))
+                    .buttonStyle(TrigramsButtonStyle())
+                    .background(palette.highlight, in: RoundedRectangle(cornerRadius: 8))
+                    .overlay { RoundedRectangle(cornerRadius: 8).stroke(model.theme == theme ? palette.salient : palette.subtle, lineWidth: model.theme == theme ? 2 : 1) }
                     .accessibilityLabel(theme.label)
                     .accessibilityValue(model.theme == theme ? String(localized: "Selected") : String(localized: "Unselected"))
                     .accessibilityIdentifier("theme.\(theme.rawValue)")
@@ -73,12 +92,12 @@ struct SettingsView: View {
         }
     }
 
-    private var systemPrompt: some View {
+    private func systemPrompt(height: CGFloat) -> some View {
         VStack(alignment: .leading, spacing: 14) {
             Text("System prompt").font(TrigramsFont.medium(16))
-            Text("The default prompt comes from pi. Save your own instructions, or restore the default.")
+            Text("Keep your instructions concise. Skills and project context are added automatically.")
                 .font(TrigramsFont.body(14)).foregroundStyle(palette.secondary).fixedSize(horizontal: false, vertical: true)
-            PromptEditor(text: $model.systemPromptDraft)
+            PromptEditor(text: $model.systemPromptDraft, height: height)
             HStack {
                 TrigramsButton(label: String(localized: "Reset to default"), icon: .reload, variant: .outlined, identifier: "resetSystemPromptButton") { Task { await model.resetSystemPrompt() } }
                 Spacer()
@@ -106,7 +125,7 @@ struct SettingsView: View {
                     Text(path).font(TrigramsFont.body(12)).textSelection(.enabled).lineLimit(2)
                     Spacer()
                     IconButton(icon: .close, label: String(localized: "Remove directory"), identifier: "removeSkillDirectory.\(path)") { Task { await model.removeSkillDirectory(path) } }
-                }.padding(8).background(palette.highlight, in: RoundedRectangle(cornerRadius: 8))
+                }.padding(.vertical, 4)
             }
             TrigramsButton(label: String(localized: "Add directory"), icon: .plus, variant: .outlined, identifier: "addSkillDirectoryButton") { Task { await model.chooseSkillDirectory() } }
             DividerLine()
@@ -114,7 +133,10 @@ struct SettingsView: View {
                 Text("No skills loaded. Add a directory containing SKILL.md resources.")
                     .font(TrigramsFont.body(13)).foregroundStyle(palette.secondary)
             }
-            ForEach(model.skills) { skill in SkillRow(skill: skill) { enabled in Task { await model.setSkill(skill, enabled: enabled) } } }
+            ForEach(model.skills) { skill in
+                SkillRow(skill: skill) { enabled in Task { await model.setSkill(skill, enabled: enabled) } }
+                DividerLine()
+            }
             if !model.resourceDiagnostics.isEmpty {
                 VStack(alignment: .leading, spacing: 12) {
                     Text("Resource diagnostics").font(TrigramsFont.medium(14))
@@ -136,11 +158,12 @@ struct SettingsView: View {
 
 private struct PromptEditor: View {
     @Binding var text: String
+    let height: CGFloat
     @State private var focused = false
     var body: some View {
         FieldSurface(focused: focused) {
             NativeTextEditor(text: $text, identifier: "systemPromptEditor", placeholder: String(localized: "System prompt"), onFocus: { focused = $0 })
-                .frame(height: 240)
+                .frame(height: height)
         }
     }
 }
@@ -188,8 +211,7 @@ private struct SkillRow: View {
                 Text(skill.path).font(TrigramsFont.code(11)).foregroundStyle(palette.secondary).textSelection(.enabled)
             }
         }
-        .padding(12).frame(maxWidth: .infinity, alignment: .leading)
-        .background(palette.highlight, in: RoundedRectangle(cornerRadius: 8))
+        .padding(.vertical, 4).frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityIdentifier("skillRow.\(skill.name)")
     }
 }

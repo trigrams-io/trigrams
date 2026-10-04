@@ -30,10 +30,6 @@ struct ComposerView: View {
                 }, onFocus: { focused = $0 })
                 .frame(height: editorHeight)
                 HStack(spacing: 8) {
-                    TrigramsButton(label: String(localized: "Skills"), icon: .book, identifier: "composerSkillsButton") {
-                        model.settingsTab = .skills
-                        model.settingsVisible = true
-                    }
                     Spacer(minLength: 4)
                     if model.isWorking {
                         TrigramsButton(label: String(localized: "Steer now"), identifier: "steerButton") { Task { await model.submit(mode: "steer") } }
@@ -67,7 +63,7 @@ struct ComposerView: View {
                 }.foregroundStyle(palette.warningText).accessibilityIdentifier("modelUnavailableMessage")
             }
         }
-        .frame(maxWidth: 760)
+        .frame(maxWidth: .infinity)
         .padding(.horizontal, 32).padding(.vertical, 16)
         .frame(maxWidth: .infinity)
         .background(palette.background)
