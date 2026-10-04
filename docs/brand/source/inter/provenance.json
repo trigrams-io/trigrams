@@ -1,0 +1,8 @@
+{
+  "repository": "https://github.com/rsms/inter",
+  "version": "v4.1",
+  "files": {
+    "InterVariable.ttf": "docs/font-files/InterVariable.ttf",
+    "LICENSE.txt": "LICENSE.txt"
+  }
+}

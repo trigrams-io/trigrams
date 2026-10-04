@@ -1,0 +1,25 @@
+:root, [data-trigrams-theme="light"] {
+  --trigrams-background: #FFFFFF;
+  --trigrams-foreground: #37474F;
+  --trigrams-accent: #673AB7;
+  --trigrams-highlight: #FAFAFA;
+  --trigrams-subtle: #ECEFF1;
+  --trigrams-secondary: #586C76;
+  --trigrams-critical: #FF6F00;
+  --trigrams-popout: #FFAB91;
+  --trigrams-strong: #000000;
+  --trigrams-faded: #B0BEC5;
+}
+
+[data-trigrams-theme="dark"] {
+  --trigrams-background: #2E3440;
+  --trigrams-foreground: #ECEFF4;
+  --trigrams-accent: #81A1C1;
+  --trigrams-highlight: #3B4252;
+  --trigrams-subtle: #434C5E;
+  --trigrams-secondary: #B9C3D3;
+  --trigrams-critical: #EBCB8B;
+  --trigrams-popout: #D08770;
+  --trigrams-strong: #ECEFF4;
+  --trigrams-faded: #677691;
+}

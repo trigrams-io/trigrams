@@ -1,0 +1,751 @@
+{
+  "brand": "Trigrams",
+  "version": "sine-1",
+  "themes": [
+    "light",
+    "dark"
+  ],
+  "files": [
+    {
+      "path": "assets/app-icon/AppIcon-Dark.appiconset/Contents.json",
+      "bytes": 1260,
+      "sha256": "ea9be9c023778ab799edecf6647857891869df2e6c5ef1fc35fadddc635c32ef"
+    },
+    {
+      "path": "assets/app-icon/AppIcon-Dark.appiconset/icon_128x128.png",
+      "bytes": 3439,
+      "sha256": "d7a13512dedb8f0926e762a23b2c602a83af84d50229f5c6071f34f405fa9e5d",
+      "width": 128,
+      "height": 128,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/app-icon/AppIcon-Dark.appiconset/icon_128x128@2x.png",
+      "bytes": 7042,
+      "sha256": "ab996bf818156c0453c1744619a781c9ed355b7565f60889a5f73756217ebe51",
+      "width": 256,
+      "height": 256,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/app-icon/AppIcon-Dark.appiconset/icon_16x16.png",
+      "bytes": 423,
+      "sha256": "3f462239c115cf9f7e72e1da5dbf137c1d23969a4f50a1df03d7a92acde2216a",
+      "width": 16,
+      "height": 16,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/app-icon/AppIcon-Dark.appiconset/icon_16x16@2x.png",
+      "bytes": 828,
+      "sha256": "8e9e39e6686c25e63940d38f26f1223ece52164f87e0366731e84838f552fcc2",
+      "width": 32,
+      "height": 32,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/app-icon/AppIcon-Dark.appiconset/icon_256x256.png",
+      "bytes": 7042,
+      "sha256": "ab996bf818156c0453c1744619a781c9ed355b7565f60889a5f73756217ebe51",
+      "width": 256,
+      "height": 256,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/app-icon/AppIcon-Dark.appiconset/icon_256x256@2x.png",
+      "bytes": 15167,
+      "sha256": "5d5e997beea3f18127a447b4ec37c0411b64fe422f7d0b4eb0e0e098eb8ca55d",
+      "width": 512,
+      "height": 512,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/app-icon/AppIcon-Dark.appiconset/icon_32x32.png",
+      "bytes": 828,
+      "sha256": "8e9e39e6686c25e63940d38f26f1223ece52164f87e0366731e84838f552fcc2",
+      "width": 32,
+      "height": 32,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/app-icon/AppIcon-Dark.appiconset/icon_32x32@2x.png",
+      "bytes": 1740,
+      "sha256": "5070c58580b86beb3862e63e62d94f55d4b29adc3a32311569e9ea9b1e5403af",
+      "width": 64,
+      "height": 64,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/app-icon/AppIcon-Dark.appiconset/icon_512x512.png",
+      "bytes": 15167,
+      "sha256": "5d5e997beea3f18127a447b4ec37c0411b64fe422f7d0b4eb0e0e098eb8ca55d",
+      "width": 512,
+      "height": 512,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/app-icon/AppIcon-Dark.appiconset/icon_512x512@2x.png",
+      "bytes": 33403,
+      "sha256": "3a78b3b7f2d72e82fc1e745b0e8b4cdb3639403fcd00bdf9f12567927357a5f6",
+      "width": 1024,
+      "height": 1024,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/app-icon/AppIcon-Light.appiconset/Contents.json",
+      "bytes": 1260,
+      "sha256": "ea9be9c023778ab799edecf6647857891869df2e6c5ef1fc35fadddc635c32ef"
+    },
+    {
+      "path": "assets/app-icon/AppIcon-Light.appiconset/icon_128x128.png",
+      "bytes": 3202,
+      "sha256": "0a6972e32de23661a74a8c1756eaf76a3a2abb3b13a53fafa90644558007dd8d",
+      "width": 128,
+      "height": 128,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/app-icon/AppIcon-Light.appiconset/icon_128x128@2x.png",
+      "bytes": 6609,
+      "sha256": "8e48c8e0ad63b4dbcec83ced9d4e046d437b34241b6fcc5f56f8ecd3154766d9",
+      "width": 256,
+      "height": 256,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/app-icon/AppIcon-Light.appiconset/icon_16x16.png",
+      "bytes": 337,
+      "sha256": "7860ca2a1d73c81216f615fa89869eadcd437ad115752148124b88f76be0ecd7",
+      "width": 16,
+      "height": 16,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/app-icon/AppIcon-Light.appiconset/icon_16x16@2x.png",
+      "bytes": 792,
+      "sha256": "517733ebc61dfebae3b86e3556f2d253ab4dfd0c4509c84829d325f74fd24576",
+      "width": 32,
+      "height": 32,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/app-icon/AppIcon-Light.appiconset/icon_256x256.png",
+      "bytes": 6609,
+      "sha256": "8e48c8e0ad63b4dbcec83ced9d4e046d437b34241b6fcc5f56f8ecd3154766d9",
+      "width": 256,
+      "height": 256,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/app-icon/AppIcon-Light.appiconset/icon_256x256@2x.png",
+      "bytes": 14282,
+      "sha256": "10ad644f9b41a8de77aed27067cd24f9e0bfb7e68c395e59e48173c959fb0f2e",
+      "width": 512,
+      "height": 512,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/app-icon/AppIcon-Light.appiconset/icon_32x32.png",
+      "bytes": 792,
+      "sha256": "517733ebc61dfebae3b86e3556f2d253ab4dfd0c4509c84829d325f74fd24576",
+      "width": 32,
+      "height": 32,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/app-icon/AppIcon-Light.appiconset/icon_32x32@2x.png",
+      "bytes": 1596,
+      "sha256": "5227a46d7a33cd1d4bd86a59f3673a7bf2ed8ab0204a278e91ab686a01f9f2e8",
+      "width": 64,
+      "height": 64,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/app-icon/AppIcon-Light.appiconset/icon_512x512.png",
+      "bytes": 14282,
+      "sha256": "10ad644f9b41a8de77aed27067cd24f9e0bfb7e68c395e59e48173c959fb0f2e",
+      "width": 512,
+      "height": 512,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/app-icon/AppIcon-Light.appiconset/icon_512x512@2x.png",
+      "bytes": 31745,
+      "sha256": "ecd6d2ec8fce8e7d27c1411d590e96e50829ffc88f3abef2dcd53b9abb3bdcca",
+      "width": 1024,
+      "height": 1024,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/app-icon/Trigrams-Dark.icns",
+      "bytes": 116129,
+      "sha256": "e050ee8d621620279ded46e82a29adf030ca4f447f68d35ff01b203fbcaf7dad"
+    },
+    {
+      "path": "assets/app-icon/Trigrams-Light.icns",
+      "bytes": 111874,
+      "sha256": "debe61373f23d8557a7ea264345402a7bbf4a360cd0e91c26d75384e7ec323d9"
+    },
+    {
+      "path": "assets/app-icon/trigrams-dark.png",
+      "bytes": 33403,
+      "sha256": "3a78b3b7f2d72e82fc1e745b0e8b4cdb3639403fcd00bdf9f12567927357a5f6",
+      "width": 1024,
+      "height": 1024,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/app-icon/trigrams-dark.svg",
+      "bytes": 16141,
+      "sha256": "ba94b130ec0431e5b6d8332f1805746cd2145ee8fe01fad76ff9765f031fb708"
+    },
+    {
+      "path": "assets/app-icon/trigrams-light.png",
+      "bytes": 31745,
+      "sha256": "ecd6d2ec8fce8e7d27c1411d590e96e50829ffc88f3abef2dcd53b9abb3bdcca",
+      "width": 1024,
+      "height": 1024,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/app-icon/trigrams-light.svg",
+      "bytes": 16142,
+      "sha256": "3e030e661aa43647b99a12080bfe1ef016d2dcc465de5ddd92e18cd23b7877f0"
+    },
+    {
+      "path": "assets/favicon/dark/apple-touch-icon.png",
+      "bytes": 4218,
+      "sha256": "f8de7dda6ad91d723aeffc529bbc4cd452ee169e4bc894b2bc0c399f40a36a0b",
+      "width": 180,
+      "height": 180,
+      "mode": "RGB"
+    },
+    {
+      "path": "assets/favicon/dark/favicon-16.png",
+      "bytes": 400,
+      "sha256": "586af7a00514e87156971309cee3bb6ee1a5d90e0f8790dc448a35a7102668d8",
+      "width": 16,
+      "height": 16,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/favicon/dark/favicon-32.png",
+      "bytes": 758,
+      "sha256": "773f0a119a3c08b90e72b5444ed1c1d6455cd821847cb0b69f5603a725023bd7",
+      "width": 32,
+      "height": 32,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/favicon/dark/favicon-48.png",
+      "bytes": 1154,
+      "sha256": "21f759a6dd83acf5b16aeff1a1bf35f4096cde6168ba1de0cfa6c0f6feaa9e59",
+      "width": 48,
+      "height": 48,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/favicon/dark/favicon.ico",
+      "bytes": 2366,
+      "sha256": "38056123581c3c3a8314fbac2d1a0fe5f3332139d32d7e02ce651a75e60838a2"
+    },
+    {
+      "path": "assets/favicon/dark/favicon.svg",
+      "bytes": 16074,
+      "sha256": "5507311bd5f60cbd6c1aa3a438a61a5494509e768fcec48553f74c99fee4470f"
+    },
+    {
+      "path": "assets/favicon/dark/icon-192.png",
+      "bytes": 4464,
+      "sha256": "20f746037c413497b3653d6d3c9b8c0b0be394352127834b993dc04bdef97ae4",
+      "width": 192,
+      "height": 192,
+      "mode": "RGB"
+    },
+    {
+      "path": "assets/favicon/dark/icon-512.png",
+      "bytes": 13179,
+      "sha256": "7414dd6702c24f10c57b673a045892a66abc695c1b1b92593417601956cd3c02",
+      "width": 512,
+      "height": 512,
+      "mode": "RGB"
+    },
+    {
+      "path": "assets/favicon/dark/maskable-512.png",
+      "bytes": 10717,
+      "sha256": "5d1516c19e86941f4b9abbcf75d4349678033c88b91a1855b007523a2aaf5f6c",
+      "width": 512,
+      "height": 512,
+      "mode": "RGB"
+    },
+    {
+      "path": "assets/favicon/dark/maskable.svg",
+      "bytes": 16123,
+      "sha256": "6b866dfc44746af000dee815eb92376185803b52839438c65d47ac37058367a9"
+    },
+    {
+      "path": "assets/favicon/dark/site.webmanifest",
+      "bytes": 473,
+      "sha256": "4abf251231bd363a517161ba436fb1859fdde12d1768da5d390a7c3423623285"
+    },
+    {
+      "path": "assets/favicon/dark/web-icon.svg",
+      "bytes": 16110,
+      "sha256": "b6aca6a8ea00bbd593556bc01184b2d7adfdae824fd3ebd906f9822d22dbed39"
+    },
+    {
+      "path": "assets/favicon/favicon.svg",
+      "bytes": 16107,
+      "sha256": "22e956053680e245ce38dbd372f41eabb8305c8f8cb5b8db9cdaf2b02584f3eb"
+    },
+    {
+      "path": "assets/favicon/light/apple-touch-icon.png",
+      "bytes": 4142,
+      "sha256": "83f1a30d96c8ba067cb0ca6078858724eb5aaa864b3c425d13f3056093bf484a",
+      "width": 180,
+      "height": 180,
+      "mode": "RGB"
+    },
+    {
+      "path": "assets/favicon/light/favicon-16.png",
+      "bytes": 410,
+      "sha256": "8007d880d81a6912062706fe3522d6c762aefbfc2c84025c29cf5bde227439e3",
+      "width": 16,
+      "height": 16,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/favicon/light/favicon-32.png",
+      "bytes": 767,
+      "sha256": "5d755185a4683b873701f090702f4b98e61cfdbf06d53482c8ef2fe837bcf0de",
+      "width": 32,
+      "height": 32,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/favicon/light/favicon-48.png",
+      "bytes": 1150,
+      "sha256": "462a70a5f218a4dcbf1f8d6883b066c8e3de9beea1913759c24c2f94a9c3b620",
+      "width": 48,
+      "height": 48,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/favicon/light/favicon.ico",
+      "bytes": 2381,
+      "sha256": "40647224879b450f443b66b7368a6e7996f521ed950487481e3fe5e11e61ab8e"
+    },
+    {
+      "path": "assets/favicon/light/favicon.svg",
+      "bytes": 16075,
+      "sha256": "6b5a7c1badbc7de178cb22c7e630ca9fbd8ed3d36828a432eab25a5d21717d30"
+    },
+    {
+      "path": "assets/favicon/light/icon-192.png",
+      "bytes": 4427,
+      "sha256": "55155cbe16087d7c6efe9e2c5138b7e4501dcf2ff175e87d65951bbec57f49d4",
+      "width": 192,
+      "height": 192,
+      "mode": "RGB"
+    },
+    {
+      "path": "assets/favicon/light/icon-512.png",
+      "bytes": 13129,
+      "sha256": "c26e5391f08d1f0b57fe31f6fdc3404e1b2ea491bd79c8358f9e91581849a001",
+      "width": 512,
+      "height": 512,
+      "mode": "RGB"
+    },
+    {
+      "path": "assets/favicon/light/maskable-512.png",
+      "bytes": 10648,
+      "sha256": "6e6cd409279913f6ef137be600b4925df6e8c1a09025bc6d74b4e8e1f1196f63",
+      "width": 512,
+      "height": 512,
+      "mode": "RGB"
+    },
+    {
+      "path": "assets/favicon/light/maskable.svg",
+      "bytes": 16124,
+      "sha256": "4316dbb18a93eaa1083e29f24657408a71acb92e38f7d9d6e580ce96e516744f"
+    },
+    {
+      "path": "assets/favicon/light/site.webmanifest",
+      "bytes": 473,
+      "sha256": "69de3b2ce61cdf30cfc1110b59aaaa97a0221aca0fd3b667a9077a57ec8cfdd3"
+    },
+    {
+      "path": "assets/favicon/light/web-icon.svg",
+      "bytes": 16111,
+      "sha256": "df610be7120e02c26efade8e8e4669d00f1e8dea09fcb863f014eb13cad2c522"
+    },
+    {
+      "path": "assets/logo/mark-dark-ink.png",
+      "bytes": 29098,
+      "sha256": "45b540e7ac70e06059f92ff0c3e61181b0b5eea49c269ddef2cf6ac37f5c811c",
+      "width": 1024,
+      "height": 1024,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/logo/mark-dark-ink.svg",
+      "bytes": 16058,
+      "sha256": "6542b5f3550cde62338f7c90971aa901d091dcbb4d864ee7ec7fde40e27a86ba"
+    },
+    {
+      "path": "assets/logo/mark-dark-solid.png",
+      "bytes": 28916,
+      "sha256": "a481a1900c883597c10f570a04b32c232d469dc4a030e1a3f4fc6dcf55d211e6",
+      "width": 1024,
+      "height": 1024,
+      "mode": "RGB"
+    },
+    {
+      "path": "assets/logo/mark-dark-solid.svg",
+      "bytes": 16109,
+      "sha256": "efef023ef07fc8bfcff92cfcecb08934d591443a0b4c1a397a415d4caf08b62e"
+    },
+    {
+      "path": "assets/logo/mark-dark-transparent.png",
+      "bytes": 29359,
+      "sha256": "01eb44a855342a7ae92ed0479032a23000ded9d1d623e299efbbb6bb73b9eb29",
+      "width": 1024,
+      "height": 1024,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/logo/mark-dark-transparent.svg",
+      "bytes": 16068,
+      "sha256": "1c9e8fac29aaa508ad2ece1d6fd9b901a53ced494e84650082c394b3c8e6867f"
+    },
+    {
+      "path": "assets/logo/mark-light-ink.png",
+      "bytes": 30005,
+      "sha256": "94c25f54f80d391e8a1a238a000a89bf844c83369c4cd31405401057a5ff14c0",
+      "width": 1024,
+      "height": 1024,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/logo/mark-light-ink.svg",
+      "bytes": 16059,
+      "sha256": "91ad593ae64593b5e1cb4e53cb4f5274b3cb36a94be4e81f5217cacc1f4a501d"
+    },
+    {
+      "path": "assets/logo/mark-light-solid.png",
+      "bytes": 28779,
+      "sha256": "803db36ba7473ac8f1eadbd99eb7ed3113876d6e48dcd9a29468c0c317ff2c2c",
+      "width": 1024,
+      "height": 1024,
+      "mode": "RGB"
+    },
+    {
+      "path": "assets/logo/mark-light-solid.svg",
+      "bytes": 16110,
+      "sha256": "e6dec49e610a891f570a036df1f7eab09c21c242cf9220124ec79d6d8fa1742f"
+    },
+    {
+      "path": "assets/logo/mark-light-transparent.png",
+      "bytes": 29777,
+      "sha256": "8a90e6187755d71a382b983c0ef3cfdd6ff0a95d405439834103f766bb64b088",
+      "width": 1024,
+      "height": 1024,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/logo/mark-light-transparent.svg",
+      "bytes": 16069,
+      "sha256": "60af1d435077576af899e5a2c5fbdfcb724bcabacce9bb65786180abf90efda4"
+    },
+    {
+      "path": "assets/logo/mark-mono-black.png",
+      "bytes": 20417,
+      "sha256": "4ae19013885d3ddda005b74ce035d0bfbd80c5013d181efe2a1546a7daae76a0",
+      "width": 1024,
+      "height": 1024,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/logo/mark-mono-black.svg",
+      "bytes": 16061,
+      "sha256": "744f8371211562bf6a039cb58c203de6d5f25590f7bacced4ad9ce33ee37acd6"
+    },
+    {
+      "path": "assets/logo/mark-mono-white.png",
+      "bytes": 24643,
+      "sha256": "a510279d74c4175dff40aa57f2c66393ecaba6221a08e4b8e69ab7384cdfad9c",
+      "width": 1024,
+      "height": 1024,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/logo/mark-mono-white.svg",
+      "bytes": 16061,
+      "sha256": "d3554a2491ad46066a8b6320d159fb2cfb05c4d27ca172aad2036473678df383"
+    },
+    {
+      "path": "assets/pattern/sine-dark.png",
+      "bytes": 49397,
+      "sha256": "e56674ed37c85a0c85e8f0551c4b5dd9c1be44b4b86097377c05913c364be686",
+      "width": 1600,
+      "height": 800,
+      "mode": "RGB"
+    },
+    {
+      "path": "assets/pattern/sine-dark.svg",
+      "bytes": 22459,
+      "sha256": "5f0e923c4b61dcb9eff2617d17369b3a36a7a7846b025189c9984a1177528540"
+    },
+    {
+      "path": "assets/pattern/sine-light.png",
+      "bytes": 49679,
+      "sha256": "69650165481825739b92c7a3b83bf592d6da3dc6cf6ae42f32b97faad7624a1d",
+      "width": 1600,
+      "height": 800,
+      "mode": "RGB"
+    },
+    {
+      "path": "assets/pattern/sine-light.svg",
+      "bytes": 22460,
+      "sha256": "b1e2f96fd3f7299f5ac967ddebfb760fea5fa857960026cde676f2df7b4ffe12"
+    },
+    {
+      "path": "assets/social/og-dark.png",
+      "bytes": 27104,
+      "sha256": "23a32e4b2769f47a6987302e0b00af24a7f9123759b480d2d85fe61eb29c400e",
+      "width": 1200,
+      "height": 630,
+      "mode": "RGB"
+    },
+    {
+      "path": "assets/social/og-dark.svg",
+      "bytes": 58346,
+      "sha256": "c567a4e1420171aae52ca2b6cf29eebb6f854582f3df38c0ca573f734856f490"
+    },
+    {
+      "path": "assets/social/og-light.png",
+      "bytes": 26904,
+      "sha256": "68c60100b1bb85f74145d8de1729b32458be0482eff1c4c07fd2b24957eb63ee",
+      "width": 1200,
+      "height": 630,
+      "mode": "RGB"
+    },
+    {
+      "path": "assets/social/og-light.svg",
+      "bytes": 58347,
+      "sha256": "a281c29810c7692a824ae151b0201660a1b8233a0ceea5cb9048e98404329b03"
+    },
+    {
+      "path": "assets/wordmark/horizontal-dark-solid.png",
+      "bytes": 48955,
+      "sha256": "69b15abef93e35e0849ff4c49676641e39f5c7d0598577ddc1ef4a396ba8252f",
+      "width": 2048,
+      "height": 674,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/wordmark/horizontal-dark-solid.svg",
+      "bytes": 28460,
+      "sha256": "bfd6274b4a7ee5c9413501424dce801cc7b63951b471b7d90365038fa17312c0"
+    },
+    {
+      "path": "assets/wordmark/horizontal-dark-transparent.png",
+      "bytes": 45058,
+      "sha256": "62cbc1728fe7005fa82208c3ff662490163ba17128f43c4cd9587a96228b18c6",
+      "width": 2048,
+      "height": 674,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/wordmark/horizontal-dark-transparent.svg",
+      "bytes": 28419,
+      "sha256": "91393d4b4793e18c69bbe5867e88bdd418c1a29e03925c9c4a5640dc8162b493"
+    },
+    {
+      "path": "assets/wordmark/horizontal-light-solid.png",
+      "bytes": 48863,
+      "sha256": "dc97304c185ced94646c03d15a875a0aec0468987f54d2937b2636efbb3fd122",
+      "width": 2048,
+      "height": 674,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/wordmark/horizontal-light-solid.svg",
+      "bytes": 28461,
+      "sha256": "3cc28b9dc314b602b16b17c7ce2fe0425ada7a5807de8e497f2e4ebd08030730"
+    },
+    {
+      "path": "assets/wordmark/horizontal-light-transparent.png",
+      "bytes": 45646,
+      "sha256": "10fccd2475f1113f1764c5d406f45c6fb9ee92b8df3b02773d8b5c30933f82cc",
+      "width": 2048,
+      "height": 674,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/wordmark/horizontal-light-transparent.svg",
+      "bytes": 28420,
+      "sha256": "99c818b04f29f3af4120da6118af6b19dbf02746f976033378dc06a1571c24b9"
+    },
+    {
+      "path": "assets/wordmark/stacked-dark-solid.png",
+      "bytes": 60382,
+      "sha256": "e7fd8d3613ce7e113f87a6df7a86014b72f5aebf1a8e0513edc01cfb01a3f22b",
+      "width": 2048,
+      "height": 1536,
+      "mode": "RGB"
+    },
+    {
+      "path": "assets/wordmark/stacked-dark-solid.svg",
+      "bytes": 28457,
+      "sha256": "95a8fd405377c9fd1234a76853c86de69daef154a9755d2baae64c59de513aff"
+    },
+    {
+      "path": "assets/wordmark/stacked-dark-transparent.png",
+      "bytes": 62081,
+      "sha256": "346169afd6d84fa34a3cc1c9b221e451c2ebfdefb205afa3dbab3c16da58dfd6",
+      "width": 2048,
+      "height": 1536,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/wordmark/stacked-dark-transparent.svg",
+      "bytes": 28416,
+      "sha256": "784ebcae383092188f3b54e84b5481642befa8ad0c30bcefab2258b0a5fb24cc"
+    },
+    {
+      "path": "assets/wordmark/stacked-light-solid.png",
+      "bytes": 60199,
+      "sha256": "35e3c52e80f62672ffe294cca0c98bb9bb57e08e0d05adbc9e82969098d39caf",
+      "width": 2048,
+      "height": 1536,
+      "mode": "RGB"
+    },
+    {
+      "path": "assets/wordmark/stacked-light-solid.svg",
+      "bytes": 28458,
+      "sha256": "7ab9c6fcd01d8a9350e6a377fb1738d3cd87839bbb93c3cfe5172e57395c942e"
+    },
+    {
+      "path": "assets/wordmark/stacked-light-transparent.png",
+      "bytes": 63017,
+      "sha256": "084d4f322d7017a24a7dcd05ced61ac931fb160a93c8a08818fcb2f90f545c5b",
+      "width": 2048,
+      "height": 1536,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/wordmark/stacked-light-transparent.svg",
+      "bytes": 28417,
+      "sha256": "cb8606ddc852d8be21e8e08ed440ef66aa08a402a5dd6d1720bf655049f9f8c4"
+    },
+    {
+      "path": "assets/wordmark/wordmark-dark-solid.png",
+      "bytes": 47202,
+      "sha256": "936600d718f2c2ed3e7b4700c9683de4a06a84c7947bce17ade75e079f7dbf02",
+      "width": 2048,
+      "height": 738,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/wordmark/wordmark-dark-solid.svg",
+      "bytes": 12541,
+      "sha256": "697b89db6d30a7cb567f239415935f64b893aa5200c711945a471774a10ee45c"
+    },
+    {
+      "path": "assets/wordmark/wordmark-dark-transparent.png",
+      "bytes": 42345,
+      "sha256": "cf0d5d9aa4f52f3318397ac9f8c43f9d214fcc6a9e631a00eefb319cc8904ef5",
+      "width": 2048,
+      "height": 738,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/wordmark/wordmark-dark-transparent.svg",
+      "bytes": 12500,
+      "sha256": "99b04f89606f8d16453f7380d484f61d1a7b48993d7b67ac5ce3118874ef8e15"
+    },
+    {
+      "path": "assets/wordmark/wordmark-light-solid.png",
+      "bytes": 46815,
+      "sha256": "d3e2a055b0f16cbba18d18a53932a9344dd831324066f1585fde281f2409ef09",
+      "width": 2048,
+      "height": 738,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/wordmark/wordmark-light-solid.svg",
+      "bytes": 12542,
+      "sha256": "434b9cd6c3c0cb02381e4dfdeaddc2e47b98f964cb4c6fda7baad7e7575025ad"
+    },
+    {
+      "path": "assets/wordmark/wordmark-light-transparent.png",
+      "bytes": 43463,
+      "sha256": "9eda97808e6d26f470906091013ac84267c702e0349b2cef6205c99facc8c9c4",
+      "width": 2048,
+      "height": 738,
+      "mode": "RGBA"
+    },
+    {
+      "path": "assets/wordmark/wordmark-light-transparent.svg",
+      "bytes": 12501,
+      "sha256": "3f334fad4ac948f655996daef40e2b017ca78ddc21123ff6927485958cc064de"
+    },
+    {
+      "path": "geometry.json",
+      "bytes": 39119,
+      "sha256": "56e3ee5879aaf1d70dc9baa3eaf182cd6ab8d312774a48ac1aec883f4bfe19f4"
+    },
+    {
+      "path": "palette.css",
+      "bytes": 705,
+      "sha256": "87f0ac9a850f5a840baf03b3173c6f42205762b2a29c422dac0930e8e93e627f"
+    },
+    {
+      "path": "palette.json",
+      "bytes": 738,
+      "sha256": "4fac263fc076a870eb13afa5c56c47fe2097b141428289d65981b2bb13cfb841"
+    },
+    {
+      "path": "trigrams-construction.png",
+      "bytes": 74091,
+      "sha256": "50408d17885769bf1edac4950c3e16f9099e4ddb332f0138c6c6fbbab94da7ea",
+      "width": 1120,
+      "height": 640,
+      "mode": "RGB"
+    },
+    {
+      "path": "trigrams-construction.svg",
+      "bytes": 343897,
+      "sha256": "656fc86640e7116c4aa8e2b384d74c590b60a1d91c02be8a9cc7d9ac5a4872cc"
+    },
+    {
+      "path": "trigrams-mark-dark.svg",
+      "bytes": 15977,
+      "sha256": "67605565ee4c7f866dbf78ccecd604d0a914153ad09f37db5963996c9d5b83d9"
+    },
+    {
+      "path": "trigrams-mark-light.svg",
+      "bytes": 15977,
+      "sha256": "8a474b107a025ace3bf649117844632ba0adfebbd40c72920ad0bec54109fd8d"
+    },
+    {
+      "path": "trigrams-mark.svg",
+      "bytes": 15977,
+      "sha256": "8a474b107a025ace3bf649117844632ba0adfebbd40c72920ad0bec54109fd8d"
+    },
+    {
+      "path": "trigrams-preview.png",
+      "bytes": 84399,
+      "sha256": "b93334291f9493552c524f83cb8b954a9ebd87d333e1b07ad0e4e3a69662506b",
+      "width": 1600,
+      "height": 940,
+      "mode": "RGB"
+    },
+    {
+      "path": "trigrams-preview.svg",
+      "bytes": 466976,
+      "sha256": "12d5507b2b4aad89cf11d50316498d5c6628631b4be60f492f2604c552820b4f"
+    }
+  ]
+}

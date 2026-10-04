@@ -1,0 +1,32 @@
+{
+  "name": "Trigrams",
+  "reference": "Nano Emacs",
+  "themes": {
+    "light": {
+      "name": "Nano Light",
+      "background": "#FFFFFF",
+      "foreground": "#37474F",
+      "accent": "#673AB7",
+      "highlight": "#FAFAFA",
+      "subtle": "#ECEFF1",
+      "secondary": "#586C76",
+      "critical": "#FF6F00",
+      "popout": "#FFAB91",
+      "strong": "#000000",
+      "faded": "#B0BEC5"
+    },
+    "dark": {
+      "name": "Nano Dark",
+      "background": "#2E3440",
+      "foreground": "#ECEFF4",
+      "accent": "#81A1C1",
+      "highlight": "#3B4252",
+      "subtle": "#434C5E",
+      "secondary": "#B9C3D3",
+      "critical": "#EBCB8B",
+      "popout": "#D08770",
+      "strong": "#ECEFF4",
+      "faded": "#677691"
+    }
+  }
+}
