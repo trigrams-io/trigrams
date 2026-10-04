@@ -1,0 +1,807 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		01F0E85CC09F49D75BC676FB /* ComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70813BADABC0E782A06E203 /* ComposerView.swift */; };
+		14B0EC56CEE0BC6B57D88607 /* MarkdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4FA603988D0AAA8FA43A25 /* MarkdownView.swift */; };
+		17FAE1FE07328AD4DB00BCC7 /* SwiftTerm in Frameworks */ = {isa = PBXBuildFile; productRef = 43E92FE1FBB279F599E38BA2 /* SwiftTerm */; };
+		1EB52CCADC0402697601B252 /* ComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70813BADABC0E782A06E203 /* ComposerView.swift */; };
+		231E574F4FF680B51B049F67 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E39A358CE32B7708EF9F05 /* SidebarView.swift */; };
+		2E4821F90FA73F66C998ACA3 /* RuntimeClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78588356C885A280AB39CF24 /* RuntimeClient.swift */; };
+		30AE13CD2DC039EF9B484115 /* TrigramsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9429F717E4659BA9DA8231D /* TrigramsApp.swift */; };
+		355385D89250ACB94FE7EAFA /* NanoTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F1C0CAE7BA4FE5E003C7BF /* NanoTheme.swift */; };
+		37EF528DC4ED32BABDE86F0E /* Phosphor-MIT.txt in Resources */ = {isa = PBXBuildFile; fileRef = DF1CB64BC90AD9EBFF799749 /* Phosphor-MIT.txt */; };
+		3CF6F6AD74D06FDE5D4952C6 /* MarkdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4FA603988D0AAA8FA43A25 /* MarkdownView.swift */; };
+		45F6826E6A5D8634B71DAEE5 /* InterVariable.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6480C261F317A2CDC61AD960 /* InterVariable.ttf */; };
+		5638C98D0FFAC3339099602C /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB4FD2D49BA5D0ED1A5AB3C /* Components.swift */; };
+		589EF339D66EFA994B0785F2 /* TrigramsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9AB59E3D99768E47E3FEB32 /* TrigramsUITests.swift */; };
+		58CEDCC1B7C33963FE5305C5 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB4FD2D49BA5D0ED1A5AB3C /* Components.swift */; };
+		5E0950A2ED6DE3C81E2C9BE2 /* JSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8FCC9B73E1D418EC205B49 /* JSONValue.swift */; };
+		5E5BD0B6C8152188BD929069 /* NanoTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F1C0CAE7BA4FE5E003C7BF /* NanoTheme.swift */; };
+		61DC8B7FB4B37C33FED27894 /* ChatModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88576B010CBD3A9DA2690A3A /* ChatModels.swift */; };
+		683E648A8B32A6354854F08F /* NativeTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0697D3DECBD1ABF2CC3B8D /* NativeTextEditor.swift */; };
+		6B78ECAF934C26CD16056822 /* Inter-OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 56AD240AEA17D22074C61539 /* Inter-OFL.txt */; };
+		7B8C4B3394DA62F01F52C5D1 /* DialogCards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D3CCCE3AE7BC327D45A8A8 /* DialogCards.swift */; };
+		823A48D3648B9CFD6709EA1C /* FoundationModelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE267DFFDE3D55947B3604CD /* FoundationModelService.swift */; };
+		8640969D2273D2EA899B0B58 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = F176286DDA68D124A9CE6279 /* Localizable.xcstrings */; };
+		90080A3FE921CF9BE89E341D /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5F7397E41121CC2DAFFD1 /* AppModel.swift */; };
+		9770B29D95DD23E0005E94BE /* JSONValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C8FCC9B73E1D418EC205B49 /* JSONValue.swift */; };
+		9B787750B2A55E5ABCF8F608 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA1EBCA01E309626EBE32C7 /* SettingsView.swift */; };
+		A2C580EE03DE287FA20F98F0 /* NativeTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0697D3DECBD1ABF2CC3B8D /* NativeTextEditor.swift */; };
+		A530A8C817A6D9F3BC64DC10 /* ChatModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88576B010CBD3A9DA2690A3A /* ChatModels.swift */; };
+		AC6509D8BBBEBE202D5E1201 /* TranscriptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA2B1B2ABD1B8FA052D5FDD /* TranscriptView.swift */; };
+		BA6F629C7BCD6383759553FB /* TrigramsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9429F717E4659BA9DA8231D /* TrigramsApp.swift */; };
+		BB7C36B5F4251801A49E62B8 /* SwiftTerm in Frameworks */ = {isa = PBXBuildFile; productRef = 5E1B6371F352FE5A92909937 /* SwiftTerm */; };
+		BCA5E9467B3C75BE0FEB21C3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1FEB21FE834087C9DE2EEC3B /* Assets.xcassets */; };
+		CA04B1BE2D6B93E9819E17C3 /* RuntimeClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78588356C885A280AB39CF24 /* RuntimeClient.swift */; };
+		CAB4656CA2AA0A978C7489DE /* CompatibilityTerminal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379E82A0657D8AEDA54B5F5F /* CompatibilityTerminal.swift */; };
+		CE249D450EE3873BBBB36D57 /* InterVariable.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6480C261F317A2CDC61AD960 /* InterVariable.ttf */; };
+		D4FE8D1DA3E5B7C81A87F48D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA1EBCA01E309626EBE32C7 /* SettingsView.swift */; };
+		E0DC90B139071643EA678315 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E39A358CE32B7708EF9F05 /* SidebarView.swift */; };
+		E152B6DDCC7A55E8361E545C /* Inter-OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 56AD240AEA17D22074C61539 /* Inter-OFL.txt */; };
+		E1567BEF0A03A84B2850A4E3 /* FoundationModelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE267DFFDE3D55947B3604CD /* FoundationModelService.swift */; };
+		E1C5449BF31790E412515700 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFAD7C489EBDE66CF322BFF1 /* RootView.swift */; };
+		E42E3DBF61F06A876286512E /* DialogCards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D3CCCE3AE7BC327D45A8A8 /* DialogCards.swift */; };
+		E938BE52C9DFBBAF27E029CC /* WindowChrome.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16F8FD0B0462463ABE54CB8 /* WindowChrome.swift */; };
+		EC7E8CB2B57634652AD5DEF1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1FEB21FE834087C9DE2EEC3B /* Assets.xcassets */; };
+		EE2B73495ADA93D33FE594DF /* WindowChrome.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16F8FD0B0462463ABE54CB8 /* WindowChrome.swift */; };
+		EF6EF3CCE37C35BCB8266396 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = F176286DDA68D124A9CE6279 /* Localizable.xcstrings */; };
+		F4DD07EB72079DAB4EC816E9 /* CompatibilityTerminal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 379E82A0657D8AEDA54B5F5F /* CompatibilityTerminal.swift */; };
+		F5693E6B2BB6663057187431 /* TranscriptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA2B1B2ABD1B8FA052D5FDD /* TranscriptView.swift */; };
+		F5D4D3F63551C404AB2ACBE9 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F5F7397E41121CC2DAFFD1 /* AppModel.swift */; };
+		F6D211DF7F47D6DA3F24CCB6 /* Phosphor-MIT.txt in Resources */ = {isa = PBXBuildFile; fileRef = DF1CB64BC90AD9EBFF799749 /* Phosphor-MIT.txt */; };
+		FE55521D47E374EF8EFD62A2 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFAD7C489EBDE66CF322BFF1 /* RootView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BA991EAE09331B2BE9440E11 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9563AA4EE880CB6E58138CF4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0BC6E81E472F48E87AE11321;
+			remoteInfo = Trigrams;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		10D3CCCE3AE7BC327D45A8A8 /* DialogCards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogCards.swift; sourceTree = "<group>"; };
+		1FEB21FE834087C9DE2EEC3B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		379E82A0657D8AEDA54B5F5F /* CompatibilityTerminal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompatibilityTerminal.swift; sourceTree = "<group>"; };
+		3C8FCC9B73E1D418EC205B49 /* JSONValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONValue.swift; sourceTree = "<group>"; };
+		3CB4FD2D49BA5D0ED1A5AB3C /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
+		56AD240AEA17D22074C61539 /* Inter-OFL.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Inter-OFL.txt"; sourceTree = "<group>"; };
+		6480C261F317A2CDC61AD960 /* InterVariable.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = InterVariable.ttf; sourceTree = "<group>"; };
+		75F5F7397E41121CC2DAFFD1 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		78588356C885A280AB39CF24 /* RuntimeClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuntimeClient.swift; sourceTree = "<group>"; };
+		800011C8C5470E0F7E4F9DBB /* TrigramsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrigramsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		88576B010CBD3A9DA2690A3A /* ChatModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModels.swift; sourceTree = "<group>"; };
+		8B0697D3DECBD1ABF2CC3B8D /* NativeTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeTextEditor.swift; sourceTree = "<group>"; };
+		97A4EDF1E9AC0BC41D02CC17 /* TrigramsStore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrigramsStore.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9CA2B1B2ABD1B8FA052D5FDD /* TranscriptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptView.swift; sourceTree = "<group>"; };
+		A9AB59E3D99768E47E3FEB32 /* TrigramsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrigramsUITests.swift; sourceTree = "<group>"; };
+		B70813BADABC0E782A06E203 /* ComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerView.swift; sourceTree = "<group>"; };
+		BFA1EBCA01E309626EBE32C7 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		CE267DFFDE3D55947B3604CD /* FoundationModelService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoundationModelService.swift; sourceTree = "<group>"; };
+		D1AD26FCFDFD53E880844543 /* Trigrams.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Trigrams.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4F1C0CAE7BA4FE5E003C7BF /* NanoTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NanoTheme.swift; sourceTree = "<group>"; };
+		DF1CB64BC90AD9EBFF799749 /* Phosphor-MIT.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Phosphor-MIT.txt"; sourceTree = "<group>"; };
+		E16F8FD0B0462463ABE54CB8 /* WindowChrome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowChrome.swift; sourceTree = "<group>"; };
+		E9429F717E4659BA9DA8231D /* TrigramsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrigramsApp.swift; sourceTree = "<group>"; };
+		EFAD7C489EBDE66CF322BFF1 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		F176286DDA68D124A9CE6279 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		F3E39A358CE32B7708EF9F05 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
+		FB4FA603988D0AAA8FA43A25 /* MarkdownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		29A5D832CDAC95691785E809 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB7C36B5F4251801A49E62B8 /* SwiftTerm in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		33B8CCB25314815983896BD7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				17FAE1FE07328AD4DB00BCC7 /* SwiftTerm in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		091B8DDCBD31935117BF756B /* App */ = {
+			isa = PBXGroup;
+			children = (
+				75F5F7397E41121CC2DAFFD1 /* AppModel.swift */,
+				E9429F717E4659BA9DA8231D /* TrigramsApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		19647185045E93AEEC9992F8 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				379E82A0657D8AEDA54B5F5F /* CompatibilityTerminal.swift */,
+				3CB4FD2D49BA5D0ED1A5AB3C /* Components.swift */,
+				B70813BADABC0E782A06E203 /* ComposerView.swift */,
+				10D3CCCE3AE7BC327D45A8A8 /* DialogCards.swift */,
+				FB4FA603988D0AAA8FA43A25 /* MarkdownView.swift */,
+				D4F1C0CAE7BA4FE5E003C7BF /* NanoTheme.swift */,
+				8B0697D3DECBD1ABF2CC3B8D /* NativeTextEditor.swift */,
+				EFAD7C489EBDE66CF322BFF1 /* RootView.swift */,
+				BFA1EBCA01E309626EBE32C7 /* SettingsView.swift */,
+				F3E39A358CE32B7708EF9F05 /* SidebarView.swift */,
+				9CA2B1B2ABD1B8FA052D5FDD /* TranscriptView.swift */,
+				E16F8FD0B0462463ABE54CB8 /* WindowChrome.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		19FD9DD5A07F15C8B5E38310 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D1AD26FCFDFD53E880844543 /* Trigrams.app */,
+				97A4EDF1E9AC0BC41D02CC17 /* TrigramsStore.app */,
+				800011C8C5470E0F7E4F9DBB /* TrigramsUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		26362F44F3672EE59C5038E4 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1FEB21FE834087C9DE2EEC3B /* Assets.xcassets */,
+				F176286DDA68D124A9CE6279 /* Localizable.xcstrings */,
+				A1CFB550E097EB67FDA2DDF8 /* Fonts */,
+				343FEA499AE70EE273FE2A67 /* Licenses */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		343FEA499AE70EE273FE2A67 /* Licenses */ = {
+			isa = PBXGroup;
+			children = (
+				56AD240AEA17D22074C61539 /* Inter-OFL.txt */,
+				DF1CB64BC90AD9EBFF799749 /* Phosphor-MIT.txt */,
+			);
+			path = Licenses;
+			sourceTree = "<group>";
+		};
+		5C6681E282B13FA6B5A05478 /* Inference */ = {
+			isa = PBXGroup;
+			children = (
+				CE267DFFDE3D55947B3604CD /* FoundationModelService.swift */,
+			);
+			path = Inference;
+			sourceTree = "<group>";
+		};
+		70DD7BD6FFF13977AE5DA6D4 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				091B8DDCBD31935117BF756B /* App */,
+				5C6681E282B13FA6B5A05478 /* Inference */,
+				A1FF35A357B14E481DA6088E /* Models */,
+				B96A3F2B1AFEEED1D5BEAFA5 /* Runtime */,
+				19647185045E93AEEC9992F8 /* UI */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		963C7B97C0AF88982888A12A = {
+			isa = PBXGroup;
+			children = (
+				26362F44F3672EE59C5038E4 /* Resources */,
+				70DD7BD6FFF13977AE5DA6D4 /* Sources */,
+				A03697C443294371C327FE0A /* Tests */,
+				19FD9DD5A07F15C8B5E38310 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A03697C443294371C327FE0A /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				A9AB59E3D99768E47E3FEB32 /* TrigramsUITests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		A1CFB550E097EB67FDA2DDF8 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				6480C261F317A2CDC61AD960 /* InterVariable.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		A1FF35A357B14E481DA6088E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				88576B010CBD3A9DA2690A3A /* ChatModels.swift */,
+				3C8FCC9B73E1D418EC205B49 /* JSONValue.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		B96A3F2B1AFEEED1D5BEAFA5 /* Runtime */ = {
+			isa = PBXGroup;
+			children = (
+				78588356C885A280AB39CF24 /* RuntimeClient.swift */,
+			);
+			path = Runtime;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		05047564C194F1FE22488DCC /* TrigramsUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 21A399B5D25B8E5AFC247618 /* Build configuration list for PBXNativeTarget "TrigramsUITests" */;
+			buildPhases = (
+				E312D9B52253ACF43E32E41C /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B0A4ADC14E69E52A0DADC867 /* PBXTargetDependency */,
+			);
+			name = TrigramsUITests;
+			packageProductDependencies = (
+			);
+			productName = TrigramsUITests;
+			productReference = 800011C8C5470E0F7E4F9DBB /* TrigramsUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		0BC6E81E472F48E87AE11321 /* Trigrams */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 604E59A8B45091A3E7C7B94A /* Build configuration list for PBXNativeTarget "Trigrams" */;
+			buildPhases = (
+				37E5BE96161453ACD2ADD43F /* Sources */,
+				A8575025DDA9DC5C65074978 /* Resources */,
+				29A5D832CDAC95691785E809 /* Frameworks */,
+				89660FF0E3AE76DE49D7FDB0 /* Bundle Node and pi runtime */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Trigrams;
+			packageProductDependencies = (
+				5E1B6371F352FE5A92909937 /* SwiftTerm */,
+			);
+			productName = Trigrams;
+			productReference = D1AD26FCFDFD53E880844543 /* Trigrams.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D9CA5A4E9128B316ACEF2CB1 /* TrigramsStore */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4A060870E7CAFAB7AC600556 /* Build configuration list for PBXNativeTarget "TrigramsStore" */;
+			buildPhases = (
+				AFD2217BFDF5A24610246493 /* Sources */,
+				2FEC19498D83B878C369AB6A /* Resources */,
+				33B8CCB25314815983896BD7 /* Frameworks */,
+				9C9D5B4EADAA975E417AB079 /* Bundle Node and pi runtime */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TrigramsStore;
+			packageProductDependencies = (
+				43E92FE1FBB279F599E38BA2 /* SwiftTerm */,
+			);
+			productName = TrigramsStore;
+			productReference = 97A4EDF1E9AC0BC41D02CC17 /* TrigramsStore.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9563AA4EE880CB6E58138CF4 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 2600;
+				TargetAttributes = {
+					05047564C194F1FE22488DCC = {
+						ProvisioningStyle = Manual;
+						TestTargetID = 0BC6E81E472F48E87AE11321;
+					};
+					0BC6E81E472F48E87AE11321 = {
+						ProvisioningStyle = Manual;
+					};
+					D9CA5A4E9128B316ACEF2CB1 = {
+						ProvisioningStyle = Manual;
+					};
+				};
+			};
+			buildConfigurationList = BAAE3CBE41097D1EC2801F57 /* Build configuration list for PBXProject "Trigrams" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 963C7B97C0AF88982888A12A;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				4423BDA35EC6019837ADD4DF /* XCRemoteSwiftPackageReference "SwiftTerm" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 19FD9DD5A07F15C8B5E38310 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0BC6E81E472F48E87AE11321 /* Trigrams */,
+				D9CA5A4E9128B316ACEF2CB1 /* TrigramsStore */,
+				05047564C194F1FE22488DCC /* TrigramsUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2FEC19498D83B878C369AB6A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BCA5E9467B3C75BE0FEB21C3 /* Assets.xcassets in Resources */,
+				6B78ECAF934C26CD16056822 /* Inter-OFL.txt in Resources */,
+				45F6826E6A5D8634B71DAEE5 /* InterVariable.ttf in Resources */,
+				8640969D2273D2EA899B0B58 /* Localizable.xcstrings in Resources */,
+				37EF528DC4ED32BABDE86F0E /* Phosphor-MIT.txt in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A8575025DDA9DC5C65074978 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EC7E8CB2B57634652AD5DEF1 /* Assets.xcassets in Resources */,
+				E152B6DDCC7A55E8361E545C /* Inter-OFL.txt in Resources */,
+				CE249D450EE3873BBBB36D57 /* InterVariable.ttf in Resources */,
+				EF6EF3CCE37C35BCB8266396 /* Localizable.xcstrings in Resources */,
+				F6D211DF7F47D6DA3F24CCB6 /* Phosphor-MIT.txt in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		89660FF0E3AE76DE49D7FDB0 /* Bundle Node and pi runtime */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Bundle Node and pi runtime";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$SRCROOT/../../scripts/bundle-runtime.sh\"";
+		};
+		9C9D5B4EADAA975E417AB079 /* Bundle Node and pi runtime */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Bundle Node and pi runtime";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$SRCROOT/../../scripts/bundle-runtime.sh\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		37E5BE96161453ACD2ADD43F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F5D4D3F63551C404AB2ACBE9 /* AppModel.swift in Sources */,
+				A530A8C817A6D9F3BC64DC10 /* ChatModels.swift in Sources */,
+				F4DD07EB72079DAB4EC816E9 /* CompatibilityTerminal.swift in Sources */,
+				5638C98D0FFAC3339099602C /* Components.swift in Sources */,
+				1EB52CCADC0402697601B252 /* ComposerView.swift in Sources */,
+				E42E3DBF61F06A876286512E /* DialogCards.swift in Sources */,
+				E1567BEF0A03A84B2850A4E3 /* FoundationModelService.swift in Sources */,
+				5E0950A2ED6DE3C81E2C9BE2 /* JSONValue.swift in Sources */,
+				14B0EC56CEE0BC6B57D88607 /* MarkdownView.swift in Sources */,
+				5E5BD0B6C8152188BD929069 /* NanoTheme.swift in Sources */,
+				683E648A8B32A6354854F08F /* NativeTextEditor.swift in Sources */,
+				E1C5449BF31790E412515700 /* RootView.swift in Sources */,
+				2E4821F90FA73F66C998ACA3 /* RuntimeClient.swift in Sources */,
+				D4FE8D1DA3E5B7C81A87F48D /* SettingsView.swift in Sources */,
+				231E574F4FF680B51B049F67 /* SidebarView.swift in Sources */,
+				F5693E6B2BB6663057187431 /* TranscriptView.swift in Sources */,
+				30AE13CD2DC039EF9B484115 /* TrigramsApp.swift in Sources */,
+				EE2B73495ADA93D33FE594DF /* WindowChrome.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AFD2217BFDF5A24610246493 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				90080A3FE921CF9BE89E341D /* AppModel.swift in Sources */,
+				61DC8B7FB4B37C33FED27894 /* ChatModels.swift in Sources */,
+				CAB4656CA2AA0A978C7489DE /* CompatibilityTerminal.swift in Sources */,
+				58CEDCC1B7C33963FE5305C5 /* Components.swift in Sources */,
+				01F0E85CC09F49D75BC676FB /* ComposerView.swift in Sources */,
+				7B8C4B3394DA62F01F52C5D1 /* DialogCards.swift in Sources */,
+				823A48D3648B9CFD6709EA1C /* FoundationModelService.swift in Sources */,
+				9770B29D95DD23E0005E94BE /* JSONValue.swift in Sources */,
+				3CF6F6AD74D06FDE5D4952C6 /* MarkdownView.swift in Sources */,
+				355385D89250ACB94FE7EAFA /* NanoTheme.swift in Sources */,
+				A2C580EE03DE287FA20F98F0 /* NativeTextEditor.swift in Sources */,
+				FE55521D47E374EF8EFD62A2 /* RootView.swift in Sources */,
+				CA04B1BE2D6B93E9819E17C3 /* RuntimeClient.swift in Sources */,
+				9B787750B2A55E5ABCF8F608 /* SettingsView.swift in Sources */,
+				E0DC90B139071643EA678315 /* SidebarView.swift in Sources */,
+				AC6509D8BBBEBE202D5E1201 /* TranscriptView.swift in Sources */,
+				BA6F629C7BCD6383759553FB /* TrigramsApp.swift in Sources */,
+				E938BE52C9DFBBAF27E029CC /* WindowChrome.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E312D9B52253ACF43E32E41C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				589EF339D66EFA994B0785F2 /* TrigramsUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B0A4ADC14E69E52A0DADC867 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0BC6E81E472F48E87AE11321 /* Trigrams */;
+			targetProxy = BA991EAE09331B2BE9440E11 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		04066C60A31F1A25F1790356 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		2730F7AAA863FD09F025BC37 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Configs/Store.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Trigrams;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Trigrams contributors";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.trigrams.store;
+				PRODUCT_NAME = Trigrams;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) APP_STORE";
+			};
+			name = Release;
+		};
+		5AE24D112169D9D3A884C4C3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.trigrams.app.uitests;
+				SDKROOT = macosx;
+				TEST_TARGET_NAME = Trigrams;
+			};
+			name = Debug;
+		};
+		8DF917F383907E8197E22C8B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Configs/Community.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Trigrams;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Trigrams contributors";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.trigrams.app;
+				PRODUCT_NAME = Trigrams;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		A4D0DD1E21ABDD85A39BC1E4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Configs/Store.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Trigrams;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Trigrams contributors";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.trigrams.store;
+				PRODUCT_NAME = Trigrams;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) APP_STORE";
+			};
+			name = Debug;
+		};
+		D1188AA3127221C86DA3C99C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.trigrams.app.uitests;
+				SDKROOT = macosx;
+				TEST_TARGET_NAME = Trigrams;
+			};
+			name = Release;
+		};
+		D45688E4FD3D392CCDBE8750 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		F832BB7A0CFC2CE23E395126 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Configs/Community.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Trigrams;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Trigrams contributors";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = io.trigrams.app;
+				PRODUCT_NAME = Trigrams;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		21A399B5D25B8E5AFC247618 /* Build configuration list for PBXNativeTarget "TrigramsUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5AE24D112169D9D3A884C4C3 /* Debug */,
+				D1188AA3127221C86DA3C99C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		4A060870E7CAFAB7AC600556 /* Build configuration list for PBXNativeTarget "TrigramsStore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A4D0DD1E21ABDD85A39BC1E4 /* Debug */,
+				2730F7AAA863FD09F025BC37 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		604E59A8B45091A3E7C7B94A /* Build configuration list for PBXNativeTarget "Trigrams" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F832BB7A0CFC2CE23E395126 /* Debug */,
+				8DF917F383907E8197E22C8B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		BAAE3CBE41097D1EC2801F57 /* Build configuration list for PBXProject "Trigrams" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D45688E4FD3D392CCDBE8750 /* Debug */,
+				04066C60A31F1A25F1790356 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4423BDA35EC6019837ADD4DF /* XCRemoteSwiftPackageReference "SwiftTerm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/migueldeicaza/SwiftTerm";
+			requirement = {
+				kind = exactVersion;
+				version = 1.11.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		43E92FE1FBB279F599E38BA2 /* SwiftTerm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4423BDA35EC6019837ADD4DF /* XCRemoteSwiftPackageReference "SwiftTerm" */;
+			productName = SwiftTerm;
+		};
+		5E1B6371F352FE5A92909937 /* SwiftTerm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4423BDA35EC6019837ADD4DF /* XCRemoteSwiftPackageReference "SwiftTerm" */;
+			productName = SwiftTerm;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 9563AA4EE880CB6E58138CF4 /* Project object */;
+}

@@ -1,0 +1,97 @@
+name: Distribution
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: Archive profile (Store is a sandbox validation candidate)
+        required: true
+        default: community
+        type: choice
+        options: [community, store]
+      notarize:
+        description: Sign and notarize the community app with configured Apple credentials
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  archive:
+    name: Tested application archive
+    runs-on: macos-26
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Prepare pinned tools and dependencies
+        run: scripts/bootstrap.sh
+      - name: Validate end-to-end behavior and coverage
+        run: scripts/test.sh
+      - name: Build archive
+        env:
+          TRIGRAMS_PROFILE: ${{ inputs.profile || 'community' }}
+        run: scripts/archive.sh "$TRIGRAMS_PROFILE"
+      - name: Upload reproducible build inputs and archive
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: Trigrams-archive-${{ inputs.profile || 'community' }}
+          path: |
+            build/Trigrams-*.zip
+            build/Trigrams-*.zip.sha256
+            agent/package-lock.json
+          if-no-files-found: error
+          retention-days: 30
+      - name: Preserve test reports
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: distribution-test-results
+          path: |
+            build/UITests.xcresult
+            build/coverage/
+          if-no-files-found: warn
+          retention-days: 14
+
+  notarize:
+    name: Developer ID signing and notarization
+    if: github.event_name == 'workflow_dispatch' && inputs.notarize
+    needs: archive
+    runs-on: macos-26
+    timeout-minutes: 25
+    environment: developer-id
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: Trigrams-archive-${{ inputs.profile || 'community' }}
+          path: build
+      - name: Require the community profile
+        env:
+          TRIGRAMS_PROFILE: ${{ inputs.profile }}
+        run: |
+          if [[ "$TRIGRAMS_PROFILE" != community ]]; then
+            echo 'Developer ID notarization requires the community profile. Store submission needs its own provisioning and sandbox validation.' >&2
+            exit 1
+          fi
+      - name: Sign nested code and notarize app
+        env:
+          APPLE_CERTIFICATE_BASE64: ${{ secrets.APPLE_CERTIFICATE_BASE64 }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          DEVELOPER_ID_APPLICATION_IDENTITY: ${{ secrets.DEVELOPER_ID_APPLICATION_IDENTITY }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
+        run: scripts/sign-and-notarize.sh
+      - name: Upload signed and stapled app
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: Trigrams-community-notarized
+          path: |
+            build/Trigrams-community-notarized.zip
+            build/Trigrams-community-notarized.zip.sha256
+          if-no-files-found: error
+          retention-days: 30

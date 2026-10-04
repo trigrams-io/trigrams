@@ -1,0 +1,83 @@
+import SwiftUI
+
+struct SidebarView: View {
+    @Bindable var model: AppModel
+    @Environment(\.nanoPalette) private var palette
+    @FocusState private var searchFocused: Bool
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            TrigramsButton(label: String(localized: "New chat"), icon: .plus, variant: .outlined, identifier: "newChatButton") { Task { await model.newChat() } }
+                .disabled(model.connection != .ready || model.isLoading || model.isWorking)
+                .keyboardShortcut("n", modifiers: .command)
+                .padding(.top, 16)
+            FieldSurface(focused: searchFocused) {
+                HStack(spacing: 7) {
+                    PhosphorIcon(icon: .magnifyingGlass, size: 16).foregroundStyle(palette.secondary)
+                    TextField(String(localized: "Search chats"), text: $model.searchText)
+                        .textFieldStyle(.plain).font(TrigramsFont.body(13)).focused($searchFocused)
+                        .accessibilityIdentifier("chatSearchField")
+                }
+            }
+            Text("Chats").font(TrigramsFont.medium(12)).foregroundStyle(palette.secondary).padding(.top, 4)
+            ScrollView {
+                LazyVStack(spacing: 4) {
+                    ForEach(model.filteredSessions) { session in
+                        ChatRow(session: session, selected: model.selectedSession?.id == session.id, working: model.selectedSession?.id == session.id && model.isWorking) {
+                            Task { await model.open(session) }
+                        }
+                        .disabled(model.isLoading || model.isWorking)
+                    }
+                    if model.filteredSessions.isEmpty {
+                        Text(model.searchText.isEmpty ? String(localized: "Your conversations appear here") : String(localized: "No matching chats"))
+                            .font(TrigramsFont.body(12)).foregroundStyle(palette.secondary)
+                            .frame(maxWidth: .infinity, alignment: .leading).padding(.vertical, 12)
+                    }
+                }
+            }.scrollIndicators(.hidden)
+            Spacer(minLength: 0)
+            DividerLine()
+            VStack(alignment: .leading, spacing: 4) {
+                TrigramsButton(label: String(localized: "Skills"), icon: .book, identifier: "skillsButton") {
+                    model.settingsTab = .skills
+                    model.settingsVisible = true
+                }
+                TrigramsButton(label: String(localized: "Settings"), icon: .settings, identifier: "settingsButton") {
+                    model.settingsTab = .appearance
+                    model.settingsVisible = true
+                }.keyboardShortcut(",", modifiers: .command)
+            }
+            .padding(.bottom, 12)
+        }
+        .padding(.horizontal, 16)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(palette.highlight)
+    }
+}
+
+struct ChatRow: View {
+    let session: ChatSession
+    let selected: Bool
+    let working: Bool
+    let action: () -> Void
+    @Environment(\.nanoPalette) private var palette
+    var body: some View {
+        Button(action: action) {
+            VStack(alignment: .leading, spacing: 6) {
+                HStack(spacing: 6) {
+                    Text(session.title).font(TrigramsFont.medium(13)).lineLimit(2).multilineTextAlignment(.leading)
+                    Spacer(minLength: 0)
+                    if working { PhosphorIcon(icon: .reload, size: 14).foregroundStyle(palette.salient) }
+                }
+                if let date = session.updatedAt {
+                    Text(date, format: .dateTime.month(.abbreviated).day().hour().minute())
+                        .font(TrigramsFont.body(11)).foregroundStyle(palette.secondary)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .buttonStyle(TrigramsButtonStyle(variant: selected ? .selected : .plain))
+        .accessibilityLabel(session.title)
+        .accessibilityValue(working ? String(localized: "Working") : selected ? String(localized: "Selected") : "")
+        .accessibilityIdentifier("chatRow.\(session.id)")
+    }
+}

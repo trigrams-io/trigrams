@@ -1,0 +1,27 @@
+coverage:
+  precision: 2
+  round: down
+  range: "80...100"
+  status:
+    project:
+      default:
+        target: 80.01%
+        threshold: 0%
+      native:
+        target: 80.01%
+        threshold: 0%
+        paths:
+          - apps/Trigrams/Sources/
+      runtime:
+        target: 80.01%
+        threshold: 0%
+        paths:
+          - agent/src/
+    patch:
+      default:
+        target: 80.01%
+        threshold: 0%
+comment:
+  layout: "reach,diff,flags,files"
+  behavior: default
+  require_changes: true
